@@ -1,0 +1,14 @@
+
+
+.button {
+    display: table; 
+    width:25%;
+    height:2.5em;
+    background-color:#0055ff;
+    text-align:center;
+    vertical-align:middle;
+}
+
+.menu {
+    
+}
