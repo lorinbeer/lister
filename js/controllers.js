@@ -6,9 +6,16 @@ function MainMenuCtrl($scope, $http) {
             console.log(data);
         });
     
-    $scope.nav = function(key) {
-        $http.get('data/'+key+'.json').success(function(data) {
-            $scope.MenuEntries = data;
-        });
+    $scope.nav = function(entry) {
+        if (entry.method="nav" || !entry.method) {
+            $http.get('data/'+entry.uri+'.json').success(function(data) {
+                $scope.MenuEntries = data;
+            });
+        } else if (entry.method="pull") {
+            $http.get('data/'+entry.uri+'.json').succuss(function(data) {
+                 
+                $scope.MenuEntries = data;
+            });
+        }
     } 
 }
