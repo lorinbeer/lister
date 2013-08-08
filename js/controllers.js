@@ -7,6 +7,14 @@ function present(selection, option) {
     return false;
 }
 
+function remove(selection, option) {
+    for (var i = 0; i < selection.options.length; i = i+1) {
+        if (selection.options[i].name == option.name) {
+            selection.options.splice(i, 1);
+        }
+    }
+}
+
 function selectionCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.pop();
     var _data;
@@ -23,7 +31,11 @@ function selectionCtrl($scope, $http, ListerDataService) {
         if (select.cost && !present(selection, select) ) {
             selection.options.push(select);
             $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
+        } else {
+           remove(selection,select);
+           $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
         }
+            
         console.log(selection.options);
     }
 }
