@@ -20,11 +20,15 @@ Lister.factory('ListerDataService', function () {
         pop : function() {
             return dataServiceObj._dat.pop();
         },
+        peak : function () {
+            return dataServiceObj._dat[dataServiceObj._dat.length-1];
+        },
         clear : function() {
             dataServiceObj._dat = [];
         },
         add : function(selection) {
             dataServiceObj._list.total = dataServiceObj._list.total + selection.cost; 
+            dataServiceObj._list.entries.push(selection); 
         }
 
     };
