@@ -16,7 +16,8 @@ function remove(selection, option) {
 }
 
 function selectionCtrl($scope, $http, ListerDataService) {
-    var entry = ListerDataService.pop();
+    var entry = ListerDataService.peak();
+    console.log(entry);
     var _data;
     var selection = {};
     selection.options = [];
@@ -34,21 +35,33 @@ function selectionCtrl($scope, $http, ListerDataService) {
         } else {
            remove(selection,select);
            $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
-        }
-            
-        console.log(selection.options);
+        }        
+    }
+
+    $scope.add = function() {
+        ListerDataService.add(selection);
+        ListerDataService.pop(); // pop the current page off the stack
+        window.location.href = '#/';
     }
 }
 
 function MainMenuCtrl($scope, $http, ListerDataService) {
-    $http.get('data/mainmenu.json').success(function(data) {
-        $scope.MenuEntries = data;
-    });
+    var entry = ListerDataService.peak();
+    if (entry) {
+        $http.get('data/'+entry.uri+'.json').success(function(data) {
+            $scope.MenuEntries = data;
+        });
+    } else {
+        $http.get('data/mainmenu.json').success(function(data) {
+            $scope.MenuEntries = data;
+        });
+    }
  
     $scope.nav = function(entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
                 if (data.type=="nav" || !data.type) {
                     data["ret"] = { "name" : "Back" };
+                    ListerDataService.push(entry);
                     $scope.MenuEntries = data;
                 } else if (data.type=="select") {
                     ListerDataService.push(entry);
@@ -67,4 +80,16 @@ function MainMenuCtrl($scope, $http, ListerDataService) {
             window.location.href = "#/selection/";
         }
     } 
+}
+
+/**
+ *
+ */
+function ListCtrl($scope, $http, ListerDataService) {
+    var entry = ListerDataService.peak();
+    if (entry) {
+        $http.get('data/'+entry.uri+'.json').success(function(data) {
+            $scope.listData = data;
+        });
+    }
 }
