@@ -15,7 +15,7 @@ function remove(selection, option) {
     }
 }
 
-function selectionCtrl($scope, $http, ListerDataService) {
+function SelectionCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
     console.log(entry);
     var _data;
@@ -45,6 +45,9 @@ function selectionCtrl($scope, $http, ListerDataService) {
     }
 }
 
+/**
+ *
+ */
 function MenuCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
     if (entry) {
@@ -75,9 +78,10 @@ function MenuCtrl($scope, $http, ListerDataService) {
                 $scope.MenuEntries = data;
             });
         } else if (entry.action=="pull") {
-            console.log(entry);
             ListerDataService.push(entry);
             window.location.href = "#/selection/";
+        } else if (entry.action=="create") {
+            window.location.href = "#/list"; 
         }
     } 
 }
@@ -89,7 +93,21 @@ function ListCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
-            $scope.listData = data;
+            $scope.ListEntries = data;
         });
+    }
+
+    $scope.nav = function(entry) {
+        // List Navigation descends until it hits a 'select' page
+        console.log(entry);
+        if (entry.action=="nav" || !entry.action) {
+            $http.get('data/'+entry.uri+'.json').success(function(data) {
+                $scope.ListEntries = data;
+            });
+        } else if (entry.action == "select") {
+            console.log(entry);
+            ListerDataService.push(entry);
+            window.location.href = "#/selection/";
+        }
     }
 }
