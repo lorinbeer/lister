@@ -15,7 +15,7 @@ function remove(selection, option) {
     }
 }
 
-function SelectionCtrl($scope, $http, ListerDataService) {
+function SelectionCtrl($scope, $http, $location, ListerDataService) {
     var entry = ListerDataService.peak();
     console.log(entry);
     var _data;
@@ -40,8 +40,8 @@ function SelectionCtrl($scope, $http, ListerDataService) {
 
     $scope.add = function() {
         ListerDataService.add(selection);
-        ListerDataService.pop(); // pop the current page off the stack
-        window.location.href = '#/';
+        ListerDataService.popToLast('create');
+        window.location.href = "#/list";
     }
 }
 
@@ -93,6 +93,8 @@ function ListCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
+            console.log(data);
+            ListerDataService._list.merge(data);
             $scope.ListEntries = data;
         });
     }
@@ -103,7 +105,8 @@ function ListCtrl($scope, $http, ListerDataService) {
         if (entry.action=="nav" || !entry.action) {
             $http.get('data/'+entry.uri+'.json').success(function(data) {
                 $scope.ListEntries = data;
-            });
+                ListerDataService.push(entry); 
+           });
         } else if (entry.action == "select") {
             console.log(entry);
             ListerDataService.push(entry);
