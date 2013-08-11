@@ -24,6 +24,12 @@ List.prototype.find = function (option) {
     
 }
 
+List.prototype.merge = function (data) {
+    for (each in data) {
+        this.add (each);
+    }
+}
+
 List.prototype.foreach = function (func) {
     for (i in this._options) {
         console.log(i);
