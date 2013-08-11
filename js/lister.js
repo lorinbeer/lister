@@ -2,7 +2,7 @@ var Lister =
     angular.module('lister', []).
         config(['$routeProvider', function($routeProvider) {
             $routeProvider.
-                when('/mainmenu', {templateUrl: 'partials/menu.html', controller: MainMenuCtrl}).
+                when('/mainmenu', {templateUrl: 'partials/menu.html', controller: MenuCtrl }).
                 when('/selection', {templateUrl: 'partials/selection.html', controller: selectionCtrl}).
                 otherwise({redirectTo: '/mainmenu'});
         }]);

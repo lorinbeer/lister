@@ -45,7 +45,7 @@ function selectionCtrl($scope, $http, ListerDataService) {
     }
 }
 
-function MainMenuCtrl($scope, $http, ListerDataService) {
+function MenuCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
