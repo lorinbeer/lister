@@ -16,11 +16,10 @@ function remove(selection, option) {
 }
 
 function SelectionCtrl($scope, $http, $location, ListerDataService) {
-    var entry = ListerDataService.peak();
-    console.log(entry);
-    var _data;
-    var selection = {};
-    selection.options = [];
+    var entry = ListerDataService.peak(),
+        _data,
+        _list = new List(entry);
+     
     $http.get('data/'+entry.uri+'.json').success(function(data) {
         $scope.spec = data;
         $scope.options = data.options;
@@ -29,17 +28,25 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
     }); 
 
     $scope.select = function(select) {
-        if (select.cost && !present(selection, select) ) {
-            selection.options.push(select);
+        console.log(_data);
+        console.log(_list);
+        if(_list.add(select)) {
             $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
-        } else {
-           remove(selection,select);
-           $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
-        }        
+        } else if( _list.find(select) ) {
+            _list.remove(select);
+            $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
+        }
+//        if (select.cost && !present(selection, select) ) {
+            //selection.options.push(select);
+            //$scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
+//        } else {
+           //remove(selection,select);
+           //$scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
+//        } 
     }
 
     $scope.add = function() {
-        ListerDataService.add(selection);
+//        ListerDataService.add(selection);
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
@@ -94,6 +101,7 @@ function ListCtrl($scope, $http, ListerDataService) {
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
             console.log(data);
+            console.log(ListerDataService._list);
             ListerDataService._list.merge(data);
             $scope.ListEntries = data;
         });
@@ -101,14 +109,12 @@ function ListCtrl($scope, $http, ListerDataService) {
 
     $scope.nav = function(entry) {
         // List Navigation descends until it hits a 'select' page
-        console.log(entry);
         if (entry.action=="nav" || !entry.action) {
             $http.get('data/'+entry.uri+'.json').success(function(data) {
                 $scope.ListEntries = data;
                 ListerDataService.push(entry); 
            });
         } else if (entry.action == "select") {
-            console.log(entry);
             ListerDataService.push(entry);
             window.location.href = "#/selection/";
         }
