@@ -47,7 +47,16 @@ Lister.factory('ListerDataService', function () {
         },
 
         add : function(selection) {
-            dataServiceObj._list.add(selection);
+            // add selection to sublist based on type
+            if (selection.type) {
+                for (each in dataServiceObj._list._options) {
+                    if (dataServiceObj._list._options[each]._id == selection.type) {
+                        dataServiceObj._list._options[each].add(selection);    
+                    }
+                }
+            } else {
+                dataServiceObj._list.add(selection);
+            }
         }
 
     };

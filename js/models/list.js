@@ -56,7 +56,6 @@ List.prototype._indexOf = function (option) {
     for (i in this._options) {
         if (typeof option == 'object') {
             if (option._id == this._options[i]._id && option._id) {
-                console.log("nahoesaeou", option, this._options[i]);
                 return i;
             } else if (option == this._options[i]) {
                 return i;    

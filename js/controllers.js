@@ -28,8 +28,6 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
     }); 
 
     $scope.select = function(select) {
-        console.log(_data);
-        console.log(_list);
         if(_list.add(select)) {
             $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
         } else if( _list.find(select) ) {
@@ -45,8 +43,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
 //        } 
     }
 
-    $scope.add = function() {
-//        ListerDataService.add(selection);
+    $scope.add = function(selection) {
+        ListerDataService.add(selection);
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
@@ -100,9 +98,9 @@ function ListCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
-            console.log(data);
-            console.log(ListerDataService._list);
-            ListerDataService._list.merge(data);
+            for (e in data) {
+                ListerDataService._list.add(new List({"id":e}));
+            }
             $scope.ListEntries = data;
         });
     }
