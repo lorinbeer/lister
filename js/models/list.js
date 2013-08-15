@@ -1,6 +1,6 @@
 List = function (data) {
     if (data) {
-        this._name = data.name;
+        this._id = data.id;
         this._data = data;
     }
     this._options = [];
@@ -36,9 +36,13 @@ List.prototype.find = function (option) {
     } 
 }
 
-List.prototype.merge = function (data) {
+List.prototype.merge = function (data, AsSubLists) {
     for (each in data) {
-        this.add (each);
+        if (AsSubLists) {
+            this.add (new List(each));
+        } else {
+            this.add (each);
+        }
     }
 }
 
@@ -50,9 +54,17 @@ List.prototype.foreach = function (func) {
 
 List.prototype._indexOf = function (option) {
     for (i in this._options) {
-        if (option == this._options[i]) {
-            console.log(i);
-            return i;
+        if (typeof option == 'object') {
+            if (option._id == this._options[i]._id && option._id) {
+                console.log("nahoesaeou", option, this._options[i]);
+                return i;
+            } else if (option == this._options[i]) {
+                return i;    
+            }
+        } else {
+            if (option == this._options[i]._id) {
+                return i;
+            }
         }
     }
 }
@@ -66,6 +78,7 @@ function present(selection, option) {
     }
     return false;
 }
+
 
 function remove(selection, option) {
     for (var i = 0; i < selection.options.length; i = i+1) {
