@@ -19,12 +19,13 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
     var entry = ListerDataService.peak(),
         _data,
         _list = new List(entry);
-     
+ 
     $http.get('data/'+entry.uri+'.json').success(function(data) {
         $scope.spec = data;
         $scope.options = data.options;
         $scope.cost = data.cost;
         _data = data;
+        _list.type = data.type;
     }); 
 
     $scope.select = function(select) {
@@ -43,8 +44,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
 //        } 
     }
 
-    $scope.add = function(selection) {
-        ListerDataService.add(selection);
+    $scope.add = function() {
+        ListerDataService.add(_list);
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
@@ -96,6 +97,7 @@ function MenuCtrl($scope, $http, ListerDataService) {
  */
 function ListCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
+    console.log(ListerDataService._list);
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
             for (e in data) {
