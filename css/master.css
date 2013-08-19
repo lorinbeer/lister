@@ -11,7 +11,6 @@
 .entry {
   width : 25%;
   height : 2.5em;
-  display:table;
 }
 
 .label {
@@ -23,8 +22,8 @@
   width : 2.5em;
   height : 2.5em;
   background-color:#FE2EF7;
-  float:right;
   text-align:right;
+  float:right;
 }
 
 
