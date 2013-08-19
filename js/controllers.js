@@ -1,20 +1,3 @@
-function present(selection, option) {
-    for (var i = 0; i < selection.options.length; i = i+1) {
-        if (selection.options[i].name == option.name) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function remove(selection, option) {
-    for (var i = 0; i < selection.options.length; i = i+1) {
-        if (selection.options[i].name == option.name) {
-            selection.options.splice(i, 1);
-        }
-    }
-}
-
 function SelectionCtrl($scope, $http, $location, ListerDataService) {
     var entry = ListerDataService.peak(),
         _data,
