@@ -32,7 +32,10 @@ List.prototype.find = function (option) {
     for (var i = 0; i < this._options.length; i = i+1) {
         if (this._options[i] == option) {
             return true;
+        } else if (this._options[i]._id == option) {
+            return i;
         }
+        
     } 
 }
 
