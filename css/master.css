@@ -1,13 +1,32 @@
 
 
 .button {
-    display: table; 
-    width:25%;
-    height:2.5em;
-    background-color:#0055ff;
-    text-align:center;
-    vertical-align:middle;
+  width:25%;
+  height:2.5em;
+  background-color:#0055ff;
+  text-align:center;
+  vertical-align:middle;
 }
+
+.entry {
+  width : 25%;
+  height : 2.5em;
+  display:table;
+}
+
+.label {
+  vertical-align: middle; 
+  text-align: center;
+}
+
+.widget {
+  width : 2.5em;
+  height : 2.5em;
+  background-color:#FE2EF7;
+  float:right;
+  text-align:right;
+}
+
 
 .menu {
     

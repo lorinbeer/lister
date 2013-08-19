@@ -1,5 +1,5 @@
 <div>
-    <div class="button" ng-repeat="entry in ListEntries">
-        <span ng-click="nav(entry)">{{entry.name}}</span>
+    <div class="entry" ng-click="nav(entry)"  ng-repeat="entry in ListEntries">
+        <span class="label" ng-click="nav(entry)">{{entry.name}}</span><div class="widget"></div>
     </div>
 </div>
