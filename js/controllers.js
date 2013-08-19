@@ -84,6 +84,7 @@ function ListCtrl($scope, $http, ListerDataService) {
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
             for (e in data) {
+                data[e]._id = e;
                 ListerDataService._list.add(new List({"id":e}));
             }
             $scope.ListEntries = data;
@@ -101,5 +102,11 @@ function ListCtrl($scope, $http, ListerDataService) {
             ListerDataService.push(entry);
             window.location.href = "#/selection/";
         }
+    }
+
+    $scope.widget = function(type) {
+        console.log(type);
+        var i = ListerDataService._list.find(type);
+        console.log(ListerDataService._list._options[i]);
     }
 }
