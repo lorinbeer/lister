@@ -18,13 +18,6 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
             _list.remove(select);
             $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
         }
-//        if (select.cost && !present(selection, select) ) {
-            //selection.options.push(select);
-            //$scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
-//        } else {
-           //remove(selection,select);
-           //$scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
-//        } 
     }
 
     $scope.add = function() {
