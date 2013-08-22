@@ -86,7 +86,16 @@ describe("Node", function() {
         expect(node.length()).toEqual(n+1);
     });
 
-    it("", function () {
-        
+    it("should have a remove function", function () {
+        expect(node.remove).toBeDefined();
     });
+
+    it("should remove specified child", function () {
+        var index = 5,
+            target = node._children[index]._id;
+        node.remove(target);
+        expect(node.length()).toEqual(n-1);
+        expect(node._children[index]).not.toBe(target);
+    });
+
 });

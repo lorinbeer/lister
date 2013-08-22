@@ -25,9 +25,13 @@ Node.prototype.add = function (childdata) {
     return true;
 }
 
-
+// removes all instances of the id
 Node.prototype.remove = function (id) {
-    
+    this._forEachChild(function (node, child, i) {
+        if(id == child._id) {
+            node._children.splice(i,1);
+        }
+    });
 }
 
 // pass callback function Node,Child,Index
@@ -41,7 +45,7 @@ Node.prototype._forEachChild = function (cb) {
 Node.prototype._indexOf = function (id) {
     var index = -1;
     // using for each turns this into an O(n) time alg in all cases
-    this._forEachChild( function (node, child, i) {
+    this._forEachChild(function (node, child, i) {
         if (id == child._id) {
             index = i
         }
