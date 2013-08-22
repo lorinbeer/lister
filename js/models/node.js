@@ -34,6 +34,18 @@ Node.prototype.remove = function (id) {
     });
 }
 
+// toJSON implemented to control data representation
+Node.prototype.toJSON = function() {
+    var jsondata = {'id' : this._id,
+                    'data' : this._data,
+                    'children' : []
+    };
+    this._forEachChild(function(n,c,i) {
+        jsondata['children'].push(c.toJSON());
+    });     
+    return JSON.stringify(jsondata); 
+}
+
 // pass callback function Node,Child,Index
 Node.prototype._forEachChild = function (cb) {
     for (var i = 0; i < this._children.length; i = i + 1) {
