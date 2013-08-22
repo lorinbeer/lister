@@ -47,8 +47,21 @@ describe("Node", function() {
         expect(node.length()).toEqual(count+1);
     });
 
-    it("", function () {
-        
+    it("should return false and not add an element with a duplicate id", function () {
+        var child = {'id' : node._children[0]._id, 'data' : 'foobar'};
+        expect(node.add(child)).toBe(false);
+        expect(node.length()).toEqual(n);
     });
 
+    it("should return false and not add an element with a duplicate id when unique is specified to be true", function () {
+        var child = {'id' : node._children[0]._id, 'data' : 'foobar', 'unique' : 'true'};
+        expect(node.add(child)).toBe(false);
+        expect(node.length()).toEqual(n);
+    });
+
+    it("should return true and add an element with a duplicate id when unique is specified to be false", function () {
+        var child = {'id' : node._children[0]._id, 'data' : 'foobar', 'unique' : 'false'};
+        expect(node.add(child)).toBe(true);
+        expect(node.length()).toEqual(n+1);
+    });
 });

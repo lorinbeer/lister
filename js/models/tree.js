@@ -9,6 +9,7 @@ var Node = function (id, data, children) {
     }
 }
 
+// returns length of children array
 Node.prototype.length = function () {
     return this._children.length;
 }
@@ -19,8 +20,8 @@ Node.prototype.add = function (childdata) {
         if (this._indexOf(childdata.id) >= 0) {
             return false;
         }
-        this._children.push(new Node(childdata.id, childdata));
     }
+    this._children.push(new Node(childdata.id, childdata));
     return true;
 }
 
