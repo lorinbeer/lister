@@ -39,10 +39,13 @@ Node.prototype._forEachChild = function (cb) {
 
 // searches only searches this node and not this nodes n-children
 Node.prototype._indexOf = function (id) {
-    for (var i = 0; i < this._children.length; i = i+1) {
-        if (id == this._children[i]._id) {
-            return i;
+    var index = -1;
+    // using for each turns this into an O(n) time alg in all cases
+    this._forEachChild( function (node, child, i) {
+        if (id == child._id) {
+            index = i
         }
-    }
+    });
+    return index;
 }
 
