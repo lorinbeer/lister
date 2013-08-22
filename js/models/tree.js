@@ -26,8 +26,8 @@ Node.prototype.add = function (childdata) {
 
 // searches only searches this node and not this nodes n-children
 Node.prototype._indexOf = function (id) {
-    for (i in this._children) {
-        if (id == this._children[i].id) {
+    for (var i = 0; i < this._children.length; i = i+1) {
+        if (id == this._children[i]._id) {
             return i;
         }
     }

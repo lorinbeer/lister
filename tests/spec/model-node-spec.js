@@ -20,7 +20,11 @@ describe("Node", function() {
         expect(node._indexOf).toBeDefined();
     });
 
-    it("
+    it("should return index of child by id", function () {
+        var index = 5,
+            target = node._children[index];
+        expect(node._indexOf(target._id)).toEqual(index);
+    });
 
     it("should return it's length", function () {
         expect(node.length).toBeDefined();
