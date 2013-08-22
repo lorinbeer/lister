@@ -98,4 +98,8 @@ describe("Node", function() {
         expect(node._children[index]).not.toBe(target);
     });
 
+    it("should have a toJSON function", function () {
+        expect(node.toJSON).toBeDefined;
+    });
+
 });
