@@ -43,6 +43,7 @@ function MenuCtrl($scope, $http, ListerDataService) {
     }
  
     $scope.nav = function(entry) {
+        console.log("wutwut", entry);
         $http.get('data/'+entry.uri+'.json').success(function(data) {
                 if (data.type=="nav" || !data.type) {
                     data["ret"] = { "name" : "Back" };
@@ -59,7 +60,7 @@ function MenuCtrl($scope, $http, ListerDataService) {
                 data["ret"] = { "name" : "Back" };
                 $scope.MenuEntries = data;
             });
-        } else if (entry.action=="pull") {
+        } else if (entry.action=="select") {
             ListerDataService.push(entry);
             window.location.href = "#/selection/";
         } else if (entry.action=="create") {
@@ -74,22 +75,26 @@ function MenuCtrl($scope, $http, ListerDataService) {
 function ListCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
     console.log(ListerDataService._list);
+    $scope.list = ListerDataService._list;
+
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
             for (e in data) {
                 data[e]._id = e;
-                ListerDataService._list.add(new List({"id":e}));
+                ListerDataService._list.add(new List({"id":e, "name":data[e].name, "uri":data[e].uri}));
             }
-            $scope.ListEntries = data;
+            $scope.list = ListerDataService._list;
         });
     }
 
     $scope.nav = function(entry) {
+        console.log(entry);
         // List Navigation descends until it hits a 'select' page
-        if (entry.action=="nav" || !entry.action) {
-            $http.get('data/'+entry.uri+'.json').success(function(data) {
-                $scope.ListEntries = data;
-                ListerDataService.push(entry); 
+        if (entry._data.action=="nav" || !entry._data.action) {
+            $http.get('data/'+entry._data.uri+'.json').success(function(data) {
+                $scope.List = data;
+                ListerDataService.push(entry._data);
+                window.location.href = "#/mainmenu"; 
            });
         } else if (entry.action == "select") {
             ListerDataService.push(entry);
