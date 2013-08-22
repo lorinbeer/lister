@@ -32,11 +32,17 @@ describe("Node", function() {
         expect(node._forEachChild).toBeDefined();
     });
 
-    it("should exist and execute callback passed to _forEachChild function on each child", function () {
+    it("should execute callback passed to _forEachChild function on each child", function () {
         var i = 0;
-            cb = function() {console.log(i)};
+            cb = function() {i=i+1;};
         node._forEachChild(cb);
+        expect(i).toEqual(n);
+    });
 
+    it("forEachChild should pass Node, Child, Index to callback", function () {
+        var index = 0;
+            cb = function(n, c, i) { expect(n).toEqual(node); expect(c).toEqual(node._children[index]); expect(index).toEqual(i); index = index + 1; };
+            node._forEachChild(cb);
     });
 
     // 

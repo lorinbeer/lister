@@ -30,10 +30,10 @@ Node.prototype.remove = function (id) {
     
 }
 
-
+// pass callback function Node,Child,Index
 Node.prototype._forEachChild = function (cb) {
     for (var i = 0; i < this._children.length; i = i + 1) {
-        cb();
+        cb(this, this._children[i], i);
     }
 }
 
