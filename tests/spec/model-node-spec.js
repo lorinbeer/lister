@@ -16,15 +16,30 @@ describe("Node", function() {
         expect(node._children.length).toEqual(n);
     });
 
+    // 'private' functions
+
     it("should have an _indexOf function", function () {
         expect(node._indexOf).toBeDefined();
     });
 
-    it("should return index of child by id", function () {
+    it("should exist and return index of child by id passed to _indexOf", function () {
         var index = 5,
             target = node._children[index];
         expect(node._indexOf(target._id)).toEqual(index);
     });
+
+    it("should have a _forEachChild function", function() {
+        expect(node._forEachChild).toBeDefined();
+    });
+
+    it("should exist and execute callback passed to _forEachChild function on each child", function () {
+        var i = 0;
+            cb = function() {console.log(i)};
+        node._forEachChild(cb);
+
+    });
+
+    // 
 
     it("should return it's length", function () {
         expect(node.length).toBeDefined();
@@ -63,5 +78,9 @@ describe("Node", function() {
         var child = {'id' : node._children[0]._id, 'data' : 'foobar', 'unique' : 'false'};
         expect(node.add(child)).toBe(true);
         expect(node.length()).toEqual(n+1);
+    });
+
+    it("", function () {
+        
     });
 });

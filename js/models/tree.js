@@ -25,6 +25,18 @@ Node.prototype.add = function (childdata) {
     return true;
 }
 
+
+Node.prototype.remove = function (id) {
+    
+}
+
+
+Node.prototype._forEachChild = function (cb) {
+    for (var i = 0; i < this._children.length; i = i + 1) {
+        cb();
+    }
+}
+
 // searches only searches this node and not this nodes n-children
 Node.prototype._indexOf = function (id) {
     for (var i = 0; i < this._children.length; i = i+1) {
@@ -33,3 +45,4 @@ Node.prototype._indexOf = function (id) {
         }
     }
 }
+
