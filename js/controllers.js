@@ -1,27 +1,27 @@
 function SelectionCtrl($scope, $http, $location, ListerDataService) {
     var entry = ListerDataService.peak(),
         _data,
-        _list = new List(entry);
- 
+        _node;
     $http.get('data/'+entry.uri+'.json').success(function(data) {
+        _node = new Node(data.name, data);
         $scope.spec = data;
         $scope.options = data.options;
         $scope.cost = data.cost;
         _data = data;
-        _list.type = data.type;
     }); 
 
     $scope.select = function(select) {
-        if(_list.add(select)) {
+        if(_node.add(select)) {
             $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
-        } else if( _list.find(select) ) {
+        } else if( _node.find(select) ) {
             _list.remove(select);
             $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
         }
     }
 
     $scope.add = function() {
-        ListerDataService.add(_list);
+        console.log(_node);
+//        ListerDataService.add(_list);
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
@@ -88,6 +88,7 @@ function ListCtrl($scope, $http, ListerDataService) {
             // parse into a tree
             ListerDataService._tree._root.fromObj(data);
             $scope.tree = ListerDataService._tree;
+            console.log(ListerDataService._tree);
         });
     }
 
