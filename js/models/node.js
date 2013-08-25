@@ -1,4 +1,5 @@
 var Node = function (id, data, children) {
+    this._type = 'node';
     this._id = id;
     this._data = data;
     this._children = [];
@@ -16,12 +17,25 @@ Node.prototype.length = function () {
 
 // add wraps passed in data inside a Node object
 Node.prototype.add = function (childdata) {
+    var childId,
+        isNode = false;
+    if (childdata._type == this._type) {
+        childId = childdata._id;
+        isNode = true;
+    } else {
+        childId = childdata.id ? childdata.id : childdata.name;
+    }
+
     if (childdata.unique == 'true' || childdata.unique == undefined) {
-        if (this._indexOf(childdata.id) >= 0) {
+        if (this._indexOf(childId) >= 0) {
             return false;
         }
     }
-    this._children.push(new Node(childdata.id, childdata));
+    if (isNode) {
+        this._children.push(childdata);
+    } else {    
+        this._children.push(new Node(childId, childdata));
+    }
     return true;
 }
 

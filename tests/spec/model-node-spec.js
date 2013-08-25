@@ -56,10 +56,18 @@ describe("Node", function() {
         expect(node.add).toBeDefined();
     });
 
-    it("should add a child", function () {
+    it("should add a child from childdata", function () {
         var child = {'id' : 'newchild', 'data' : 'foobar'};
         node.add(child);
+        expect(node.length()).toEqual(n+1);
         expect(node._children[node._children.length-1]._id).toEqual(child.id);
+    });
+
+    it("should add a node as a child", function () {
+        var nodechild = new Node('foobar', {'foo':'bar'});
+        node.add(nodechild);
+        expect(node.length()).toEqual(n+1);
+        expect(node._children[node._children.length-1]._id).toEqual(nodechild._id);
     });
  
     it("should increment length on add", function () {
