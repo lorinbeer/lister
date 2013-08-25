@@ -20,4 +20,18 @@ describe("Tree", function() {
     it("constructor should create new tree with passed node as root", function () {
         expect(tree._root._id).toEqual('fib_root');
     });
+
+    it("should have a _bft breadth first traversal function", function () {
+        expect(tree._bft).toBeDefined();
+    });
+
+    it("should visit each node with _bft", function () {
+        var children = [],
+            cb = function(child) {
+            children.push(child);
+        }
+        tree._bft(cb);
+        console.log(children);
+    });
+
 });
