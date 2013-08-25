@@ -102,4 +102,17 @@ describe("Node", function() {
         expect(node.toJSON).toBeDefined;
     });
 
+    it("should have a fromObj function", function () {
+        expect(node.fromObj).toBeDefined;
+    });
+
+    it("should load from a javascript object", function() {
+        var obj = {};
+        for (var i = 0; i < 10; i++) {
+                obj['test-child'+i] = {'id' : 'test-child'+i, 'data' : 'my data is unique to child'+i}
+        }
+        node.fromObj(obj);
+        expect(node.length()).toEqual(n+10);
+    });
+
 });
