@@ -12,6 +12,7 @@ Lister.factory('ListerDataService', function () {
     var dataServiceObj = {
         _dat : [],
         _list: new List(),
+        _tree: new Tree(),
 
         getLast : function(action) {
             for (var i = dataServiceObj._dat.length-1; i >= 0; i = i -1) {
