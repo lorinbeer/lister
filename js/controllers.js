@@ -37,18 +37,21 @@ function MenuCtrl($scope, $http, ListerDataService) {
             $scope.MenuEntries = data;
         });
     } else {
-        $http.get('data/mainmenu.json').success(function(data) {
-            $scope.MenuEntries = data;
-        });
+        $http.get('data/mainmenu.json').
+            success(function(data) {
+                $scope.MenuEntries = data;
+            }).
+            error(function(data, status, headers, config) {
+            });
     }
  
     $scope.nav = function(entry) {
-        console.log("wutwut", entry);
         $http.get('data/'+entry.uri+'.json').success(function(data) {
                 if (data.type=="nav" || !data.type) {
                     data["ret"] = { "name" : "Back" };
                     ListerDataService.push(entry);
                     $scope.MenuEntries = data;
+                    console.log(data);
                 } else if (data.type=="select") {
                     ListerDataService.push(entry);
                     window.location.href = "#/selection/";
@@ -74,21 +77,22 @@ function MenuCtrl($scope, $http, ListerDataService) {
  */
 function ListCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
-    console.log(ListerDataService._list);
     $scope.list = ListerDataService._list;
+    $scope.tree = ListerDataService._tree;
 
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
+            // add the key to each element as the id
             for (e in data) {
-                data[e]._id = e;
-                ListerDataService._list.add(new List({"id":e, "name":data[e].name, "uri":data[e].uri}));
+                data[e].id = e;
             }
-            $scope.list = ListerDataService._list;
+            // parse into a tree
+            ListerDataService._tree._root.fromObj(data);
+//            $scope.list = ListerDataService._list;
         });
     }
 
     $scope.nav = function(entry) {
-        console.log(entry);
         // List Navigation descends until it hits a 'select' page
         if (entry._data.action=="nav" || !entry._data.action) {
             $http.get('data/'+entry._data.uri+'.json').success(function(data) {
@@ -103,8 +107,7 @@ function ListCtrl($scope, $http, ListerDataService) {
     }
 
     $scope.widget = function(type) {
-        console.log(type);
         var i = ListerDataService._list.find(type);
-        console.log(ListerDataService._list._options[i]);
+        console.log(i);;
     }
 }
