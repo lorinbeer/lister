@@ -34,6 +34,19 @@ Node.prototype.remove = function (id) {
     });
 }
 
+//
+Node.prototype.fromJSON = function(jsonstr) {
+    
+}
+
+// parses a javascript object
+Node.prototype.fromObj = function(data) {
+    for(var i in data) {
+        this.add(data[i]);
+        console.log(data[i]);
+    }
+}
+
 // toJSON implemented to control data representation
 Node.prototype.toJSON = function() {
     var jsondata = {'id' : this._id,
