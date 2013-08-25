@@ -43,7 +43,6 @@ Node.prototype.fromJSON = function(jsonstr) {
 Node.prototype.fromObj = function(data) {
     for(var i in data) {
         this.add(data[i]);
-        console.log(data[i]);
     }
 }
 
