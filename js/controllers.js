@@ -51,7 +51,6 @@ function MenuCtrl($scope, $http, ListerDataService) {
                     data["ret"] = { "name" : "Back" };
                     ListerDataService.push(entry);
                     $scope.MenuEntries = data;
-                    console.log(data);
                 } else if (data.type=="select") {
                     ListerDataService.push(entry);
                     window.location.href = "#/selection/";
@@ -88,7 +87,7 @@ function ListCtrl($scope, $http, ListerDataService) {
             }
             // parse into a tree
             ListerDataService._tree._root.fromObj(data);
-//            $scope.list = ListerDataService._list;
+            $scope.tree = ListerDataService._tree;
         });
     }
 
