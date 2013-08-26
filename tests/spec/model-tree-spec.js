@@ -2,6 +2,7 @@ describe("Tree", function() {
     var tree,
         n = 20,
         fb;
+
     beforeEach(function() {
         node = new Node('fib_root', null);
         fb = [0,1];
@@ -31,7 +32,13 @@ describe("Tree", function() {
             children.push(child);
         }
         tree._bft(cb);
-        console.log(children);
+    });
+
+    it("should add a node as a child of some descendant of root with addChild()", function () {
+        var child = new Node("badass", {"funky":"dory", "happy":"ohsohappy"});
+            target = tree._root._children[4]; // target the 5th child arbitrarily
+        tree.addChild(target._id, child);
+        expect(target._children[0]._id).toEqual(child._id);
     });
 
 });
