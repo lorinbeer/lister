@@ -20,8 +20,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
     }
 
     $scope.add = function() {
-        console.log(_node);
-//        ListerDataService.add(_list);
+        ListerDataService._tree.addChild(_node._data.parent, _node);
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
