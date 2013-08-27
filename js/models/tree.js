@@ -2,6 +2,18 @@ var Tree = function(root) {
     this._root = root ? root : new Node('root');
 }
 
+Tree.prototype.search = function(targetid) {
+    var found,
+        callback = function(node) {
+        if (node._id == targetid) {
+            found = node;
+            return true;
+        }
+    }
+    this._bft(callback);
+    return found;
+}
+
 //adds 'node' as a child to tree-node with target id
 Tree.prototype.addChild = function(targetid, child) {
     var callback = function(node) {
@@ -22,6 +34,5 @@ Tree.prototype._bft = function(callback) {
         callback(queue[0]);
         queue = queue.concat(queue[0]._children);
         queue.shift();
-    }
-    
+    }    
 }
