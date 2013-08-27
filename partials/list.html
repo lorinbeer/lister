@@ -1,8 +1,5 @@
 <div>
-    <div class="entry" ng-repeat="child in tree._root._children">
-        <span class="label" ng-click="nav(child)">{{child._id}}</span><div ng-click="widget(child)" class="widget"></div>
-        <div class="subentry" ng-repeat="descendant in child._children">
-            <span class="shit">{{descendant._id}}
-        </div>
+    <div id="list" class="entry" ng-repeat="child in tree._root._children">
+        <span class="label" ng-click="nav(child)">{{child._id}}</span><div ng-click="widget('expand',child)" class="widget"></div>
     </div>
 </div>

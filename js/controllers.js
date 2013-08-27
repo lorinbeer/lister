@@ -73,7 +73,7 @@ function MenuCtrl($scope, $http, ListerDataService) {
 /**
  *
  */
-function ListCtrl($scope, $http, ListerDataService) {
+function ListCtrl($scope, $http, $compile, ListerDataService) {
     var entry = ListerDataService.peak();
     $scope.list = ListerDataService._list;
     $scope.tree = ListerDataService._tree;
@@ -105,8 +105,14 @@ function ListCtrl($scope, $http, ListerDataService) {
         }
     }
 
-    $scope.widget = function(type) {
-        var i = ListerDataService._list.find(type);
-        console.log(i);;
+    $scope.widget = function(type, target) {
+        var subentry = "<div class='subentry' ng-repeat='descendant in _expand._children'><span class='shit'>{{descendant._id}}</div>"
+        var listem = angular.element(document.querySelector("#list"));
+        listem.append(subentry);
+        var i = ListerDataService._tree.search(target._id);
+        console.log(i);
+        $scope._expand = i;
+        subentry = angular.element(document.querySelector(".subentry"));
+        $compile(subentry)($scope);
     }
 }
