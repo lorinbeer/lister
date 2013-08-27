@@ -3,7 +3,12 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
         _data,
         _node;
     $http.get('data/'+entry.uri+'.json').success(function(data) {
-        _node = new Node(data.name, data);
+        var name = data.name;
+        if (!data.unique) {
+            name = name + Math.floor((Math.random()*1000)+1);
+        }
+        _node = new Node(name, data);
+        console.log(data.name);
         $scope.spec = data;
         $scope.options = data.options;
         $scope.cost = data.cost;
