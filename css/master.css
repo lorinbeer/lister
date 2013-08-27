@@ -21,11 +21,17 @@
 .widget {
   width : 2.5em;
   height : 2.5em;
-  background-color:#FE2EF7;
   text-align:right;
   float:right;
 }
 
+.widget.exp {
+  background-color:#FE2EFE;
+}
+
+.widget.con {
+  background-color:#EFE2EF;
+}
 
 .menu {
     
