@@ -113,12 +113,14 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
     $scope.widget = function(type, target) {
         if (document.querySelector(".subentry") != null) {
             var l = angular.element(document.querySelector(".subentry"));
+            
             l.remove();
              angular.element(document.querySelector("#"+target._id+"_exp")).toggleClass("exp");
             angular.element(document.querySelector("#"+target._id+"_exp")).toggleClass("con");
             return;
         }
-        var subentry = "<div class='subentry' ng-repeat='descendant in _expand._children'><span class='shit'>{{descendant._id}}</div>";
+
+        var subentry = "<div id=\"" + target  + "\"" + "class='subentry' ng-repeat='descendant in _expand._children'><span class='shit'>{{descendant._id}}</div>";
         
         var listem = angular.element(document.querySelector("#list"));
         listem.append(subentry);
@@ -127,6 +129,7 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
         var widget = angular.element(document.querySelector("#"+target._id+"_exp"));
         widget.toggleClass("exp");widget.toggleClass("con");        
         $scope._expand = i;
+        console.log($scope._expand);
         subentry = angular.element(document.querySelector(".subentry"));
         $compile(subentry)($scope);
     }
