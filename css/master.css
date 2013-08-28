@@ -2,18 +2,21 @@
 
 .button {
   width:25%;
-  height:2.5em;
   background-color:#0055ff;
   text-align:center;
-  vertical-align:middle;
+  vertical-align:middle; 
+}
+
+.list {
+  width : 25%;
 }
 
 .entry {
-  width : 25%;
-  height : 2.5em;
 }
 
 .label {
+  height : 2.5em;
+  display : inline-block;
   vertical-align: middle; 
   text-align: center;
 }
@@ -22,11 +25,16 @@
   width : 2.5em;
   height : 2.5em;
   text-align:right;
-  float:right;
+  float:right; 
 }
 
 .widget.exp {
   background-color:#FE2EFE;
+}
+
+.spacer {
+  height : 2.5em;
+  display : inline-block;
 }
 
 .widget.con {
