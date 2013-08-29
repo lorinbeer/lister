@@ -82,12 +82,15 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
     var entry = ListerDataService.peak();
     $scope.list = ListerDataService._list;
     $scope.tree = ListerDataService._tree;
-
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
             // add the key to each element as the id
             for (e in data) {
                 data[e].id = e;
+                
+            }
+            for (e in ListerDataService._tree._root._children) {
+                ListerDataService._tree._root._children[e].expand = false;
             }
             // parse into a tree
             ListerDataService._tree._root.fromObj(data);
@@ -111,26 +114,13 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
     }
 
     $scope.widget = function(type, target) {
-        if (document.querySelector(".subentry") != null) {
-            var l = angular.element(document.querySelector(".subentry"));
-            
-            l.remove();
-             angular.element(document.querySelector("#"+target._id+"_exp")).toggleClass("exp");
-            angular.element(document.querySelector("#"+target._id+"_exp")).toggleClass("con");
-            return;
+        target.expand = target.expand ? false: true;
+/*
+        if (target.expand == "disp") {
+            target.expand = "fils";
+        } else {
+            target.expand = "disp";
         }
-
-        var subentry = "<div id=\"" + target  + "\"" + "class='subentry' ng-repeat='descendant in _expand._children'><span class='shit'>{{descendant._id}}</div>";
-        
-        var listem = angular.element(document.querySelector("#list"));
-        listem.append(subentry);
-        var i = ListerDataService._tree.search(target._id);
-        
-        var widget = angular.element(document.querySelector("#"+target._id+"_exp"));
-        widget.toggleClass("exp");widget.toggleClass("con");        
-        $scope._expand = i;
-        console.log($scope._expand);
-        subentry = angular.element(document.querySelector(".subentry"));
-        $compile(subentry)($scope);
+*/
     }
 }

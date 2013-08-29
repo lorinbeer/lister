@@ -10,11 +10,15 @@ Lister.directive("lsListView", function () {
                      // the entry button
                      '<span class="label" ng-click="nav(child)">{{child._id}}</span>' +
                     // the entry widget(s)
-                     '<div id="{{child._id+\'_exp\'}}" ng-click="widget(\'expand\',child)" class="widget exp"></div>' +
+                       '<div id="{{child._id+\'_exp\'}}" ng-click="widget(\'expand\',child)" class="widget exp"></div>' +
                     // subentry
-                        '<div id="{{child._id+\'_sublist\'}}" ng-repeat="descendant in child._children">' +
-                        '{{descendant._id}}' +
-                     '</div>' +
+                        '<div ng-switch="child.expand">' +
+                            '<div ng-switch-when="true">'+
+                                '<div id="{{child._id+\'_sublist\'}}" ng-repeat="subchild in child._children">'+
+                                    '<div>{{subchild._data.name}}</div>' +
+                                '</div>'+
+                            '</div>'+  
+                        '</div>' +
                    '</div>',
         link : function (scope, elem, attr) {
             console.log("lsListView directive 'link' function");
