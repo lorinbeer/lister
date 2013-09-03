@@ -66,6 +66,10 @@ Node.prototype.remove = function (id) {
     });
 }
 
+// remove all children
+Node.prototype.clear = function() {
+    this._children = [];
+}
 //
 Node.prototype.fromJSON = function(jsonstr) {
     
