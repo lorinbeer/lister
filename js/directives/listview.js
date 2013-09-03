@@ -39,8 +39,6 @@ Lister.directive("lsListView", function () {
                         '</div>' +
                    '</div>',
         link : function (scope, elem, attr) {
-            console.log("lsListView directive 'link' function");
-            console.log(scope, elem, attr);
 
             scope.$watch('expand', function (oldval, newval) {
 

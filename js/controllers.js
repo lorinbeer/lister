@@ -19,31 +19,39 @@
 function SelectionCtrl($scope, $http, $location, ListerDataService) {
     var entry = ListerDataService.peak(),
         _data,
-        _node;
+        _node,
+        _mode;
     $http.get('data/'+entry.uri+'.json').success(function(data) {
         var name = data.name;
         if (!data.unique) {
             name = name + Math.floor((Math.random()*1000)+1);
         }
         _node = new Node(name, data);
-        console.log(data.name);
+        _mode = data.mode ? data.mode : 'sel';
         $scope.spec = data;
         $scope.options = data.options;
-        $scope.cost = data.cost;
+        $scope.cost = data.cost ? data.cost : 0;
         _data = data;
     }); 
 
     $scope.select = function(select) {
-        if(_node.add(select)) {
-            $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
-        } else if( _node.find(select) ) {
-            _list.remove(select);
-            $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
+        if (_mode == 'mex') {
+            select.parent = _data.parent;
+            _node = new Node(select.id, select);
+            console.log(_node);
+        } else if (_mode == 'sel') {
+            if(_node.add(select)) {
+                $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
+            } else if( _node.find(select) ) {
+                _list.remove(select);
+                $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
+            }
         }
     }
 
     $scope.add = function() {
         ListerDataService._tree.addChild(_node._data.parent, _node);
+        console.log(ListerDataService._tree);
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
@@ -113,7 +121,6 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
             // parse into a tree
             ListerDataService._tree._root.fromObj(data);
             $scope.tree = ListerDataService._tree;
-            console.log(ListerDataService._tree);
         });
     }
 
