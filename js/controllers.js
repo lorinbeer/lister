@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function SelectionCtrl($scope, $http, $location, ListerDataService) {
+function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler) {
     var entry = ListerDataService.peak(),
         _data,
         _node,
@@ -49,6 +49,21 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
             }
         }
     }
+
+    $scope.subselect = function(select, subselect) {
+        if ( _node._indexOf(subselect.name)>=0) {
+            console.log(subselect);
+            _node.remove(subselect.name);
+            $scope.cost = JSON.parse($scope.cost) - JSON.parse(subselect.cost);
+        } else {
+            ListerRuler.interpret(select.rule,_node,{'selection':subselect,'entry':select});
+            $scope.cost = _data.cost;
+            for (child in _node._children) {
+                $scope.cost = JSON.parse($scope.cost) + JSON.parse(_node._children[child]._data.cost);
+            }
+        }
+    }
+
 
     $scope.add = function() {
         if (!ListerDataService._tree.addChild(_node._data.parent, _node)) {

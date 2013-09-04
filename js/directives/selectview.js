@@ -28,7 +28,7 @@ Lister.directive("lsSelectView", function () {
                             // if the option itself has optionts
                             '<div ng-switch="opt.action">'+
                                 '<div ng-switch-when="select">{{opt.name}}'+
-                                    '<div ng-repeat="subopt in opt.options" ng-click="select(subopt)">{{subopt.name}} {{subopt.cost}}</div>' +
+                                    '<div ng-repeat="subopt in opt.options" ng-click="subselect(opt, subopt)">{{subopt.name}} {{subopt.cost}}</div>' +
                                 ' </div>' +
                                 '<div ng-switch-default ng-click="select(opt)">{{opt.name}} {{opt.cost}}</div>' +
                             '</div>' +
