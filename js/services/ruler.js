@@ -33,15 +33,19 @@ Lister.factory('ListerRuler', function () {
     var maxHandler = function(rule, tree, context) {
         var count = 0;
         for (opt in context.entry.options) {
-            if (tree._indexOf(context.entry.optionts[opt].name) >= 0) {
+            console.log(opt)
+            if (tree._indexOf(context.entry.options[opt].name) >= 0) {
                 count = count + 1;
             }
         }
-        
+        if (count < rule.value) {
+            tree.add(context.selection);
+        }        
     };
     var rulerService = {
         rulemap : {'mex' : mexHandler,
-                   'min' : minHandler
+                   'min' : minHandler,
+                   'max' : maxHandler
                   },
         interpret : function(rule, tree, context) {
             return rulerService.rulemap[rule.name](rule, tree, context);
