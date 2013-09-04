@@ -38,7 +38,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
         if (_mode == 'mex') {
             select.parent = _data.parent;
             _node = new Node(select.id, select);
-            console.log(_node);
+            // update cost with this entries cost
+            $scope.cost = JSON.parse(select.cost);
         } else if (_mode == 'sel') {
             if(_node.add(select)) {
                 $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
