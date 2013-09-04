@@ -16,8 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<div>
-    <div class="button" ng-repeat="entry in MenuEntries">
-        <span ng-click="nav(entry)">{{entry.name}}</span>
-    </div>
+<div class="topcoat-list">
+    <ul class="topcoat-list__container">
+    <li class="topcoat-list__item" ng-repeat="entry in MenuEntries" ng-click="nav(entry)">
+        {{entry.name}}
+    </li>
+    </ul>
 </div>
