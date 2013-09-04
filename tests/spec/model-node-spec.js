@@ -52,6 +52,16 @@ describe("Node", function() {
         expect(node.length()).toEqual(node._children.length);
     });
 
+    it("should find a node by id present as a child ", function () {
+        var index = 4,
+            id  = node._children[index];
+        expect(node.find(id)).toEqual(node._children[index].id);
+    });
+
+    it("should fail to find a nonexistant node by id", function () {
+        expect(node.find("foobar")).toBe(undefined);
+    });
+
     it("should have an add function", function () {
         expect(node.add).toBeDefined();
     });

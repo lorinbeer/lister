@@ -17,6 +17,10 @@
  */
 
 Lister.factory('ListerRuler', function () {
+    
+    // Handlers interpret rules pre selection
+    // They can enforce intelligent behaviour, such as toggling mutually exclusive selections
+
     // mutually exlcusive selection
     var mexHandler = function(rule, tree, context) {
         for (opt in context.entry.options) {
@@ -50,13 +54,49 @@ Lister.factory('ListerRuler', function () {
             tree.add(context.selection);
         }        
     };
+
+    // Validators interpret rules post selection, and return false if validation fails 
+    
+    // mutually exclusive validator
+    var mexValidator = function(rule, tree, context) {
+        var target = tree.find(rule.target);
+        
+    };
+
+    // min value validator
+    var minEntryValidator = function(rule, tree, context) {
+        var target = tree.find(rule.target);
+        if (target.length() >= rule.value) {
+            return true;
+        }
+    };
+
+    // max value validator
+    var maxEntryValidator = function(rule, tree, context) {
+        var target = tree.find(rule.target);
+        if (target.length() <= rule.value) {
+            return true;
+        }
+    };
+
     var rulerService = {
-        rulemap : {'mex' : mexHandler,
-                   'min' : minHandler,
-                   'max' : maxHandler
+        rulemap : {'mex' : {'handler': mexHandler, 'validator': mexValidator},
+                   'min' : {'handler': minHandler, 'validator': minEntryValidator},
+                   'max' : {'handler': maxHandler, 'validator': maxEntryValidator}
                   },
+
+        //
         interpret : function(rule, tree, context) {
-            return rulerService.rulemap[rule.name](rule, tree, context);
+            return rulerService.rulemap[rule.name].handler(rule, tree, context);
+        },
+
+        // 
+        validate : function(rules, tree, context) {
+            for (i in rules) {
+                rulerService.rulemap[rule.name].validator(rule, tree, context);
+                // search for rule target(s) in tree
+                // apply rule targets
+            }
         }
     };
     

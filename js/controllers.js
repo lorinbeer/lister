@@ -67,11 +67,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         }
     }
 
-
     $scope.add = function() {
-        if (!ListerDataService._tree.addChild(_node._data.parent, _node)) {
-            console.log(_node, "already added");
-        }
+        ListerDataService._tree.addChild(_node._data.parent, _node)
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }

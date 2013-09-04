@@ -33,6 +33,14 @@ Node.prototype.length = function () {
     return this._children.length;
 }
 
+// returns first node with id
+Node.prototype.find = function (id) {
+    var i = this._indexOf(id);
+    if (i >= 0) {
+        return this._children[i];
+    }
+}
+
 // add wraps passed in data inside a Node object
 Node.prototype.add = function (childdata) {
     var childId,
