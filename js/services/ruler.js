@@ -36,6 +36,7 @@ Lister.factory('ListerRuler', function () {
         if (count > rule.value) {
             tree.add(context.selection);
         }
+        return true;
     };
     // max value handler 
     var maxHandler = function(rule, tree, context) {
@@ -45,7 +46,7 @@ Lister.factory('ListerRuler', function () {
                 count = count + 1;
             }
         }
-        if (count =< rule.value) {
+        if (count <= rule.value) {
             tree.add(context.selection);
         }        
     };
