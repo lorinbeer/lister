@@ -39,6 +39,13 @@ Tree.prototype.addChild = function(targetid, child) {
             node.add(child);
         }
     }
+
+    if (child.unique) {
+       if (this.search(child.id)) {
+            return false;
+        } 
+    }
+
     this._bft(callback);        
 }
 

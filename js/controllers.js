@@ -50,8 +50,9 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
     }
 
     $scope.add = function() {
-        ListerDataService._tree.addChild(_node._data.parent, _node);
-        console.log(ListerDataService._tree);
+        if (!ListerDataService._tree.addChild(_node._data.parent, _node)) {
+            console.log(_node, "already added");
+        }
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
