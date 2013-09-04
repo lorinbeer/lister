@@ -27,18 +27,25 @@ Lister.factory('ListerRuler', function () {
     };
     // minimum value selection
     var minHandler = function(rule, tree, context) {
-        
+        var count = 0;
+        for (opt in context.entry.options) {
+            if (tree._indexOf(context.entry.options[opt].name) >= 0) {
+                count = count + 1;
+            }
+        }
+        if (count > rule.value) {
+            tree.add(context.selection);
+        }
     };
     // max value handler 
     var maxHandler = function(rule, tree, context) {
         var count = 0;
         for (opt in context.entry.options) {
-            console.log(opt)
             if (tree._indexOf(context.entry.options[opt].name) >= 0) {
                 count = count + 1;
             }
         }
-        if (count < rule.value) {
+        if (count =< rule.value) {
             tree.add(context.selection);
         }        
     };
