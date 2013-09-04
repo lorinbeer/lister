@@ -21,6 +21,12 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         _data,
         _node,
         _mode;
+
+    var toggle = function(s) {
+        _node.remove(s.name);
+        $scope.cost = JSON.parse($scope.cost) - JSON.parse(s.cost);
+    } 
+
     $http.get('data/'+entry.uri+'.json').success(function(data) {
         var name = data.name;
         if (!data.unique) {
@@ -32,7 +38,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         $scope.options = data.options;
         $scope.cost = data.cost ? data.cost : 0;
         _data = data;
-    }); 
+    });
 
     $scope.select = function(select) {
         if (_mode == 'mex') {
@@ -44,17 +50,14 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             if(_node.add(select)) {
                 $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
             } else if( _node._indexOf(select.name)>=0) {
-                _node.remove(select.name);
-                $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
+                toggle(select);
             }
         }
     }
 
     $scope.subselect = function(select, subselect) {
         if ( _node._indexOf(subselect.name)>=0) {
-            console.log(subselect);
-            _node.remove(subselect.name);
-            $scope.cost = JSON.parse($scope.cost) - JSON.parse(subselect.cost);
+            toggle(subselect);
         } else {
             ListerRuler.interpret(select.rule,_node,{'selection':subselect,'entry':select});
             $scope.cost = _data.cost;
