@@ -43,8 +43,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
         } else if (_mode == 'sel') {
             if(_node.add(select)) {
                 $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
-            } else if( _node.find(select) ) {
-                _list.remove(select);
+            } else if( _node._indexOf(select.name)>=0) {
+                _node.remove(select.name);
                 $scope.cost = JSON.parse($scope.cost) - JSON.parse(select.cost);
             }
         }
@@ -61,7 +61,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService) {
 
 /**
  *
- */
+ &*/
 function MenuCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
     if (entry) {
