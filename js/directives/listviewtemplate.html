@@ -1,4 +1,28 @@
-<div class="list" ng-repeat="child in tree._root._children">
+<div class="topcoat-list">
+    <ul class="topcoat-list__container">
+        <li class="topcoat-list__item" ng-repeat="child in tree._root._children" ng-click="nav(child)">
+            <span>{{child._id}}</span>
+            <div class="widget exp" ng-click="widget('expand',child); $event.stopPropagation()">
+            <svg version="1.1" baseProfile="tiny" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+     x="0px" y="0px" width="42px" height="42px" viewBox="-0.5 0.5 42 42" xml:space="preserve">
+<path d="M25.5,2.5h-10c-2.53,0-3,0.529-3,3v15h-12l20,20l20-20h-12v-15C28.5,3.061,28,2.5,25.5,2.5z"/>
+</svg>
+
+            </div>
+            <div ng-switch="child.expand">
+                <div class="topcoat-list" ng-switch-when="true">
+                    <ul class="topcoat-list__container">
+                        <li class="topcoat-list__item" id="{{child._id+'_sublist'}}" ng-repeat="subchild in child._children">
+                            <div>{{subchild._data.name}}</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<!--
     <div class="spacer"></div>
     <span class="label" ng-click="nav(child)">{{child._id}}</span> 
     <div id="{{child._id+'_exp'}}" ng-click="widget('expand',child)" class="widget exp"></div>
@@ -9,4 +33,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
