@@ -20,16 +20,20 @@
 Lister.directive('lsToggleWidget', function ($http) {
     return {
         restrict : 'A',
-        replace : false,
-        template : '<div><svg></svg></div>',
+        replace : true,
+        template : '<div></div>',
 //        templateUrl : 'partials/togglewidget.html',
         compile : function compile(tElement, tAttrs, transclude) {
             $http.get(tAttrs.off).success(function (data) {
-                tElement.find('svg').append(data);
+                tElement.append(data);
             });
-        },
-        link : function (scope, elem, attr) {
-        
+            return function (scope, elem, attr) {
+                console.log('link', elem);
+                elem.find('svg').remove();
+                $http.get(attr.off).success(function(data) {
+                    elem.append(data);
+                });
+            }
         }
     }
 });

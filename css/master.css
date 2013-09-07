@@ -7,25 +7,26 @@
   vertical-align:middle; 
 }
 
-.list {
-  width : 25%;
+.list_item {
+  text-align:justify;
 }
 
-.entry {
+.list_item:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+    height: 0;
+    font-size:0;
+    line-height:0;
 }
 
-.label {
-  height : 2.5em;
-  display : inline-block;
-  vertical-align: middle; 
-  text-align: center;
+.list_contents {
+  display:inline-block;
 }
 
-.widget {
-  width : 2.5em;
-  height : 2.5em;
-  text-align:right;
-  float:right; 
+.list_widget {
+  display:inline-block;
+  vertical-align:baseline;
 }
 
 .widget.exp {

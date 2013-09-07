@@ -1,14 +1,9 @@
 <div class="topcoat-list">
     <ul class="topcoat-list__container">
         <li class="topcoat-list__item" ng-repeat="child in tree._root._children" ng-click="nav(child)">
-            <span>{{child._id}}</span>
-            <div class="widget exp" ng-click="widget('expand',child); $event.stopPropagation()">
-            <svg version="1.1" baseProfile="tiny" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
-     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-     x="0px" y="0px" width="42px" height="42px" viewBox="-0.5 0.5 42 42" xml:space="preserve">
-<path d="M25.5,2.5h-10c-2.53,0-3,0.529-3,3v15h-12l20,20l20-20h-12v-15C28.5,3.061,28,2.5,25.5,2.5z"/>
-</svg>
-
+            <div class="list_item">
+              <div class="list_contents">{{child._id}}</div>
+              <div class="list_widget" ng-click="widget('expand',child); $event.stopPropagation();" ls-toggle-widget on="icons/svg/arrow_up.svg" off="icons/svg/arrow_down.svg"></div>
             </div>
             <div ng-switch="child.expand">
                 <div class="topcoat-list" ng-switch-when="true">

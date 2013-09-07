@@ -2,8 +2,8 @@ describe("ToggleWidget", function() {
     var modulename = "lister",
         officonurl = 'icons/svg/down_arrow.svg',
         oniconurl = 'icons/svg/up_arrow.svg',
-        offsvg = '<circle cx="0" cy="0" r="50" fill="red"/>',
-        onsvg = '<rect width="50" height="50" style="fill:rgb(0,0,255)"/>',
+        offsvg = '<svg><circle cx="0" cy="0" r="50" fill="red"/></svg>',
+        onsvg = '<svg><rect width="50" height="50" style="fill:rgb(0,0,255)"/></svg>',
         $httpBackend,
         $rootscope,
         html,
@@ -31,6 +31,10 @@ describe("ToggleWidget", function() {
     });
 
     it("should swap the svg contents on click", function () {
+
     });
 
+    it("should toggle svg contents", function () {
+
+    });
 });
