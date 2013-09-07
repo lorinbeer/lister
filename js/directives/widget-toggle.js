@@ -28,7 +28,6 @@ Lister.directive('lsToggleWidget', function ($http) {
                 tElement.append(data);
             });
             return function (scope, elem, attr) {
-                console.log('link', elem);
                 elem.find('svg').remove();
                 $http.get(attr.off).success(function(data) {
                     elem.append(data);
