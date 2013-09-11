@@ -26,11 +26,24 @@ var Lister =
                 otherwise({redirectTo: '/mainmenu'});
         }]);
 
-Lister.factory('ListerDataService', function () {
+Lister.factory('ListerDataService', function ($http) {
     var dataServiceObj = {
         _dat : [],
         _list: new List(),
         _tree: new Tree(),
+
+        create : function(entry) {
+            // retrieve the template to create from
+            $http.get('data/'+entry.uri+'.json').success(function(data) {
+                // add the id to each data object
+                for (e in data) {
+                    data[e].id = e;
+                }
+                // build a new tree from data
+                dataServiceObj._tree = new Tree();
+                dataServiceObj._tree._root.fromObj(data);
+            });
+        },
 
         getLast : function(action) {
             for (var i = dataServiceObj._dat.length-1; i >= 0; i = i -1) {

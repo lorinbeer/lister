@@ -45,7 +45,6 @@ function MenuCtrl($scope, $http, ListerDataService) {
                     window.location.href = "#/selection/";
                 }
             });
-
         if (entry.action=="nav" || !entry.action) {
             $http.get('data/'+entry.uri+'.json').success(function(data) {
                 data["ret"] = { "name" : "Back" };
@@ -55,6 +54,7 @@ function MenuCtrl($scope, $http, ListerDataService) {
             ListerDataService.push(entry);
             window.location.href = "#/selection/";
         } else if (entry.action=="create") {
+            ListerDataService.create(entry);
             window.location.href = "#/list";
         }
     }

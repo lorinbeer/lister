@@ -78,24 +78,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
  *
  */
 function ListCtrl($scope, $http, $compile, ListerDataService) {
-    var entry = ListerDataService.peak();
-    $scope.tree = ListerDataService._tree; 
-    if (entry) {
-        $http.get('data/'+entry.uri+'.json').success(function(data) {
-            console.log(entry.track);
-            // add the key to each element as the id
-            console.log(data);
-            for (e in data) {
-                data[e].id = e;
-                if (entry.track) {
-                    data[e].total = 0;
-                }
-            }
-            // parse into a tree
-            ListerDataService._tree._root.fromObj(data);
-            $scope.tree = ListerDataService._tree;
-        });
-    }
+    $scope.tree = ListerDataService._tree;    
 
     $scope.nav = function(entry) {
         // List Navigation descends until it hits a 'select' page
