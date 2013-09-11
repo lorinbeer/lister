@@ -22,7 +22,7 @@ Lister.directive("lsListView", function () {
         // restricts to use as an attribute
         restrict : 'A', 
         replace : false,
-        templateUrl : 'js/directives/listviewtemplate.html',
+        templateUrl : 'partials/listviewtemplate.html',
         link : function (scope, elem, attr) {
         }
     }

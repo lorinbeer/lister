@@ -76,63 +76,20 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 
 /**
  *
- &*/
-function MenuCtrl($scope, $http, ListerDataService) {
-    var entry = ListerDataService.peak();
-    if (entry) {
-        $http.get('data/'+entry.uri+'.json').success(function(data) {
-            $scope.MenuEntries = data;
-        });
-    } else {
-        $http.get('data/mainmenu.json').
-            success(function(data) {
-                $scope.MenuEntries = data;
-            }).
-            error(function(data, status, headers, config) {
-            });
-    }
- 
-    $scope.nav = function(entry) {
-        $http.get('data/'+entry.uri+'.json').success(function(data) {
-                if (data.type=="nav" || !data.type) {
-                    data["ret"] = { "name" : "Back" };
-                    ListerDataService.push(entry);
-                    $scope.MenuEntries = data;
-                } else if (data.type=="select") {
-                    ListerDataService.push(entry);
-                    window.location.href = "#/selection/";
-                }
-            });
-
-        if (entry.action=="nav" || !entry.action) {
-            $http.get('data/'+entry.uri+'.json').success(function(data) {
-                data["ret"] = { "name" : "Back" };
-                $scope.MenuEntries = data;
-            });
-        } else if (entry.action=="select") {
-            ListerDataService.push(entry);
-            window.location.href = "#/selection/";
-        } else if (entry.action=="create") {
-            window.location.href = "#/list"; 
-        }
-    } 
-}
-
-/**
- *
  */
 function ListCtrl($scope, $http, $compile, ListerDataService) {
     var entry = ListerDataService.peak();
-    $scope.list = ListerDataService._list;
-    $scope.tree = ListerDataService._tree;
+    $scope.tree = ListerDataService._tree; 
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
+            console.log(entry.track);
             // add the key to each element as the id
+            console.log(data);
             for (e in data) {
                 data[e].id = e;
-            }
-            for (e in ListerDataService._tree._root._children) {
-                ListerDataService._tree._root._children[e].expand = false;
+                if (entry.track) {
+                    data[e].total = 0;
+                }
             }
             // parse into a tree
             ListerDataService._tree._root.fromObj(data);
