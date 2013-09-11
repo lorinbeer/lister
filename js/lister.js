@@ -32,13 +32,19 @@ Lister.factory('ListerDataService', function ($http) {
         _list: new List(),
         _tree: new Tree(),
 
+        update : function() {
+           
+        },
+
         create : function(entry) {
             // retrieve the template to create from
             $http.get('data/'+entry.uri+'.json').success(function(data) {
                 // add the id to each data object
                 for (e in data) {
                     data[e].id = e;
+                    data[e].total = 0;
                 }
+                data.total = 0;
                 // build a new tree from data
                 dataServiceObj._tree = new Tree();
                 dataServiceObj._tree._root.fromObj(data);

@@ -24,7 +24,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 
     var toggle = function(s) {
         _node.remove(s.name);
-        $scope.cost = JSON.parse($scope.cost) - JSON.parse(s.cost);
+        _node.cost = JSON.parse($scope.cost) - JSON.parse(s.cost);
     } 
 
     $http.get('data/'+entry.uri+'.json').success(function(data) {
@@ -36,7 +36,9 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         _mode = data.mode ? data.mode : 'sel';
         $scope.spec = data;
         $scope.options = data.options;
-        $scope.cost = data.cost ? data.cost : 0;
+        _node.cost = data.cost ? data.cost : 0;
+        // bind the node cost to the scope, node cost in our running total, data cost is the baseline
+        $scope.cost = _node.cost;
         _data = data;
     });
 
@@ -45,7 +47,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             select.parent = _data.parent;
             _node = new Node(select.id, select);
             // update cost with this entries cost
-            $scope.cost = JSON.parse(select.cost);
+            _node.cost = JSON.parse(select.cost);
+            $scope.cost = _node.cost;
         } else if (_mode == 'sel') {
             if(_node.add(select)) {
                 $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
@@ -60,15 +63,19 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             toggle(subselect);
         } else {
             ListerRuler.interpret(select.rule,_node,{'selection':subselect,'entry':select});
-            $scope.cost = _data.cost;
+            _node.cost = _data.cost;
             for (child in _node._children) {
                 $scope.cost = JSON.parse($scope.cost) + JSON.parse(_node._children[child]._data.cost);
             }
         }
     }
-
+    /**
+     * add button handler
+     */
     $scope.add = function() {
-        ListerDataService._tree.addChild(_node._data.parent, _node)
+        ListerDataService._tree.addChild(_node._data.parent, _node);
+        console.log(_node.cost);
+        ListerDataService._tree.search(_node._data.parent)._data.total =+ _node.cost;
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
@@ -87,7 +94,7 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
                 $scope.List = data;
                 ListerDataService.push(entry._data);
                 window.location.href = "#/mainmenu"; 
-           });
+            });
         } else if (entry.action == "select") {
             ListerDataService.push(entry);
             window.location.href = "#/selection/";

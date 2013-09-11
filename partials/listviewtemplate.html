@@ -3,8 +3,8 @@
         <li class="topcoat-list__item" ng-repeat="child in tree._root._children" ng-click="nav(child)">
             <div class="list_item">
               <div class="list_contents">
-                <span>{{child._id}}</span>
-                <div>Total: {{child.total}}</div>
+                <span>{{child._data.name}}</span>
+                <div><span>Total:</span>{{child._data.total}}</div>
               </div>
               <div class="list_widget" 
                    ls-toggle-widget 
