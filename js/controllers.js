@@ -76,7 +76,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
     $scope.add = function() {
         ListerDataService._tree.addChild(_node._data.parent, _node);
         console.log(_node.cost);
-        ListerDataService._tree.search(_node._data.parent)._data.total =+ _node.cost;
+        var parent = ListerDataService._tree.search(_node._data.parent)
+        parent._data.total = parent._data.total + _node.cost;
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
