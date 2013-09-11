@@ -17,10 +17,12 @@
  */
 
 
-Lister.directive('lsToggleWidget', function ($http) {
+Lister.directive('lsToggleWidget', function ($http, $parse, $rootScope) {
     return {
         restrict : 'A',
         replace : true,
+        scope : {node:'='},
+        transclude : 'element',
         template : '<div></div>',
 //        templateUrl : 'partials/togglewidget.html',
         compile : function compile(tElement, tAttrs, transclude) {
@@ -31,6 +33,22 @@ Lister.directive('lsToggleWidget', function ($http) {
                 elem.find('svg').remove();
                 $http.get(attr.off).success(function(data) {
                     elem.append(data);
+                });
+                var state = false, v;
+                elem.bind('mouseup', function() {
+                    if (state) {
+                        state = !state;
+                        v = 'off';
+                    } else {
+                        state = !state;
+                        v = 'on';
+                    }
+                    elem.find('svg').remove();
+                    $http.get(attr[v]).success(function(data) {
+                        elem.append(data);
+                        scope.node.expand = !scope.node.expand;
+                    });
+                    scope.$apply();
                 });
             }
         }
