@@ -61,14 +61,16 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 
     $scope.subselect = function(select, subselect) {
         if ( _node._indexOf(subselect.name)>=0) {
+            console.log(select, subselect);
             toggle(subselect);
         } else {
             ListerRuler.interpret(select.rule,_node,{'selection':subselect,'entry':select});
             _node.cost = _data.cost;
             for (child in _node._children) {
-                $scope.cost = JSON.parse($scope.cost) + JSON.parse(_node._children[child]._data.cost);
+                _node.cost = JSON.parse(_node.cost) + JSON.parse(_node._children[child]._data.cost);
             }
         }
+        $scope.cost = _node.cost;
     }
     /**
      * add button handler
@@ -77,7 +79,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         ListerDataService._tree.addChild(_node._data.parent, _node);
         console.log(_node.cost);
         var parent = ListerDataService._tree.search(_node._data.parent)
-        parent._data.total = parent._data.total + _node.cost;
+        parent._data.total = JSON.parse(parent._data.total) + JSON.parse(_node.cost);
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
