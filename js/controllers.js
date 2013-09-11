@@ -24,7 +24,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 
     var toggle = function(s) {
         _node.remove(s.name);
-        _node.cost = JSON.parse($scope.cost) - JSON.parse(s.cost);
+        _node.cost = JSON.parse(_node.cost) - JSON.parse(s.cost);
     } 
 
     $http.get('data/'+entry.uri+'.json').success(function(data) {
@@ -36,6 +36,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         _mode = data.mode ? data.mode : 'sel';
         $scope.spec = data;
         $scope.options = data.options;
+        // set the base cost
         _node.cost = data.cost ? data.cost : 0;
         // bind the node cost to the scope, node cost in our running total, data cost is the baseline
         $scope.cost = _node.cost;
@@ -48,14 +49,14 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             _node = new Node(select.id, select);
             // update cost with this entries cost
             _node.cost = JSON.parse(select.cost);
-            $scope.cost = _node.cost;
         } else if (_mode == 'sel') {
             if(_node.add(select)) {
-                $scope.cost = JSON.parse($scope.cost) + JSON.parse(select.cost);
+                _node.cost = JSON.parse(_node.cost) + JSON.parse(select.cost);
             } else if( _node._indexOf(select.name)>=0) {
                 toggle(select);
             }
         }
+        $scope.cost = _node.cost;
     }
 
     $scope.subselect = function(select, subselect) {
