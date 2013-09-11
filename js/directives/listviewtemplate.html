@@ -3,7 +3,12 @@
         <li class="topcoat-list__item" ng-repeat="child in tree._root._children" ng-click="nav(child)">
             <div class="list_item">
               <div class="list_contents">{{child._id}}</div>
-              <div class="list_widget" ng-click="widget('expand',child); $event.stopPropagation();" ls-toggle-widget on="icons/svg/arrow_up.svg" off="icons/svg/arrow_down.svg"></div>
+              <div class="list_widget" 
+                   ls-toggle-widget 
+                   node="child" 
+                   on="icons/svg/arrow_up.svg" 
+                   off="icons/svg/arrow_down.svg">
+              </div>
             </div>
             <div ng-switch="child.expand">
                 <div class="topcoat-list" ng-switch-when="true">
@@ -17,15 +22,3 @@
         </li>
     </ul>
 </div>
-<!--
-    <div class="spacer"></div>
-    <span class="label" ng-click="nav(child)">{{child._id}}</span> 
-    <div id="{{child._id+'_exp'}}" ng-click="widget('expand',child)" class="widget exp"></div>
-    <div ng-switch="child.expand">
-        <div ng-switch-when="true">
-            <div id="{{child._id+'_sublist'}}" ng-repeat="subchild in child._children">
-                <div>{{subchild._data.name}}</div>
-            </div>
-        </div>
-    </div>
-</div>-->
