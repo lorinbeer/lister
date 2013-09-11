@@ -130,7 +130,6 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
             // add the key to each element as the id
             for (e in data) {
                 data[e].id = e;
-                
             }
             for (e in ListerDataService._tree._root._children) {
                 ListerDataService._tree._root._children[e].expand = false;
@@ -153,16 +152,5 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
             ListerDataService.push(entry);
             window.location.href = "#/selection/";
         }
-    }
-
-    $scope.widget = function(type, target) {
-        target.expand = target.expand ? false: true;
-/*
-        if (target.expand == "disp") {
-            target.expand = "fils";
-        } else {
-            target.expand = "disp";
-        }
-*/
     }
 }
