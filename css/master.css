@@ -34,6 +34,11 @@
   background-color: #ffffff;
 }
 
+.twobar {
+  float:left;
+  width:50%;
+}
+
 .spacer {
   height : 2.5em;
   display : inline-block;
