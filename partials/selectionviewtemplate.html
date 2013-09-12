@@ -1,0 +1,13 @@
+<div>
+  <span ng-click="">{{spec.name}}  {{cost}}</span>
+  <div ng-repeat="opt in options">
+    <div ng-switch="opt.action">
+      <div ng-switch-when="select">{{opt.name}}
+        <div ng-repeat="subopt in opt.options" ng-click="subselect(opt, subopt)">{{subopt.name}} {{subopt.cost}}</div> 
+      </div> 
+      <div ng-switch-default ng-click="select(opt)">{{opt.name}} {{opt.cost}}</div> 
+    </div> 
+  </div> 
+</div> 
+<div ng-click="add()">Add</div> 
+<div ng-click=""> Cancel</div>

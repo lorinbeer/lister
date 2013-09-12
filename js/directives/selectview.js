@@ -22,37 +22,7 @@ Lister.directive("lsSelectView", function () {
         restrict : 'A',
         scope : '=',
         replace : false,
-        template :  '<div>' +
-                        '<span ng-click="">{{spec.name}}  {{cost}}</span>' +
-                        '<div ng-repeat="opt in options">'+
-                            // if the option itself has optionts
-                            '<div ng-switch="opt.action">'+
-                                '<div ng-switch-when="select">{{opt.name}}'+
-                                    '<div ng-repeat="subopt in opt.options" ng-click="subselect(opt, subopt)">{{subopt.name}} {{subopt.cost}}</div>' +
-                                ' </div>' +
-                                '<div ng-switch-default ng-click="select(opt)">{{opt.name}} {{opt.cost}}</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div ng-click="add()">Add</div>' +
-                    '<div ng-click=""> Cancel</div>'
-/*
-
-                    '<div class="list" ng-repeat="child in tree._root._children">' +
-                     '<div class="spacer"></div>' +
-                     // the entry button
-                     '<span class="label" ng-click="nav(child)">{{child._id}}</span>' +
-                    // the entry widget(s)
-                       '<div id="{{child._id+\'_exp\'}}" ng-click="widget(\'expand\',child)" class="widget exp"></div>' +
-                    // subentry
-                        '<div ng-switch="child.expand">' +
-                            '<div ng-switch-when="true">'+
-                                '<div id="{{child._id+\'_sublist\'}}" ng-repeat="subchild in child._children">'+
-                                    '<div>{{subchild._data.name}}</div>' +
-                                '</div>'+
-                            '</div>'+
-                        '</div>' +
-                   '</div>' */,
+        templateUrl : "partials/selectionviewtemplate.html",
         link : function (scope, elem, attr) {
 
             scope.$watch('expand', function (oldval, newval) {
