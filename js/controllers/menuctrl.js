@@ -26,7 +26,7 @@ function MenuCtrl($scope, $http, ListerDataService) {
             $scope.MenuEntries = data;
         });
     } else {
-        $http.get('data/mainmenu.json').
+        $http.get('data/index.json').
             success(function(data) {
                 $scope.MenuEntries = data;
             }).
