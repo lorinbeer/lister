@@ -1,13 +1,21 @@
-<div>
-  <span ng-click="">{{spec.name}}  {{cost}}</span>
-  <div ng-repeat="opt in options">
-    <div ng-switch="opt.action">
-      <div ng-switch-when="select">{{opt.name}}
-        <div ng-repeat="subopt in opt.options" ng-click="subselect(opt, subopt)">{{subopt.name}} {{subopt.cost}}</div> 
-      </div> 
-      <div ng-switch-default ng-click="select(opt)">{{opt.name}} {{opt.cost}}</div> 
-    </div> 
-  </div> 
+<div class="topcoat-list">
+  <h2 class="topcoat-list__header" ng-click="">{{spec.name}}  {{cost}}</h2>
+  <ul class="topcoat-list__container">
+    <li class="topcoat-list__item" ng-repeat="opt in options" ng-click="select(opt)">
+      <div ng-switch="opt.action">{{opt.action}}
+        <!-- if this is a subselection -->
+        <div ng-switch-when="select">
+          <h3 class="topcoat-list__header">{{opt.name}}</h3>
+          <ul class="topcoat-list__container">
+            <li class="topcoat-list__item" ng-repeat="subopt in opt.options" ng-click="subselect(opt, subopt); $event.stopPropagation()">{{subopt.name}} {{subopt.cost}}</li> 
+          </ul>
+        </div>
+        <!-- default list entry, just the item and its cost -->
+        <div ng-switch-default>{{opt.name}} {{opt.cost}}</div>
+        </div>
+    </li>  
+
+  </ul>
 </div> 
 <div ng-click="add()">Add</div> 
 <div ng-click=""> Cancel</div>
