@@ -13,7 +13,7 @@ describe("ToggleWidget", function() {
     beforeEach(function() {
         module(modulename);
         inject(function($injector, $compile, $rootScope) {
-            $httpBackend = $injector.get('$httpBackend');
+            $httpBackend = $injector.get("$httpBackend");
             $httpBackend.whenGET(officonurl).respond(offsvg);
             $httpBackend.whenGET(oniconurl).respond(onsvg);
 
@@ -27,7 +27,6 @@ describe("ToggleWidget", function() {
 
     it("should compile the html with the 'on' icon svg injected into the svg element", function () {
         $httpBackend.flush();
-        console.log(compiled.children().children());
     });
 
     it("should swap the svg contents on click", function () {
