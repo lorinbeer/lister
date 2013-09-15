@@ -23,7 +23,6 @@
 .list_contents {
   display:inline-block;
   vertical-align:top;
-  font-size:1.5em;
 }
 
 .list_widget {
@@ -37,16 +36,4 @@
 .twobar {
   float:left;
   width:50%;
-}
-
-.spacer {
-  height : 2.5em;
-  display : inline-block;
-}
-
-.widget.con {
-}
-
-.menu {
-    
 }

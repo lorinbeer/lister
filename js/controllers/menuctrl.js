@@ -21,6 +21,7 @@
  */
 function MenuCtrl($scope, $http, ListerDataService) {
     var entry = ListerDataService.peak();
+
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
             $scope.MenuEntries = data;
@@ -31,6 +32,7 @@ function MenuCtrl($scope, $http, ListerDataService) {
                 $scope.MenuEntries = data;
             }).
             error(function(data, status, headers, config) {
+                console.log(data, status, headers, config);
             });
     }
 
