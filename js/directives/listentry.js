@@ -16,17 +16,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-Lister.directive("lsSelectView", function () {
+
+Lister.directive("lsListItem", function () {
     return {
         // restricts to use as an attribute
-        restrict : 'A',
-        scope : '=',
-        trasclude: 'element',
-        replace : false,
-        templateUrl : "partials/selectionviewtemplate.html",
-        compile : function (scope, elem, attr) {
+        restrict : 'E', 
+        replace : true,
+        scope : true,
+        transclude: 'element',  
+        templateUrl : "partials/listentrytemplate.html",
+       // repeater priority takes precedence 
+        compile : function compile(element, attrs, transclude) {
+            console.log('options', attrs);
             return function (scope, elem, attr) {
-            };
-        },
+                for (a in attr) {
+                   // console.log(attr[a]);
+                }
+                scope.$digest();    
+            }
+        }
     }
 });

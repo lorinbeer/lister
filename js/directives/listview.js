@@ -23,7 +23,10 @@ Lister.directive("lsListView", function () {
         restrict : 'A', 
         replace : false,
         templateUrl : 'partials/listviewtemplate.html',
-        link : function (scope, elem, attr) {
+        compile : function compile(element, attrs, transclude) {
+                console.log(document.getElementsByTagName('li'));
+                return function (scope, elem, attr) {
+            }
         }
     }
 });

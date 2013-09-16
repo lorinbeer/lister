@@ -1,7 +1,7 @@
 <div class="topcoat-list">
   <h1 class="topcoat-list__header" ng-click="">{{spec.name}}  {{cost}}</h1>
   <ul class="topcoat-list__container">
-    <li class="topcoat-list__item" ng-repeat="opt in options" ng-click="select(opt)">
+    <ls-list-item class="topcoat-list__item" ng-repeat="opt in options" data="opt" ng-click="select(opt)">
       <div ng-switch="opt.action">
         <!-- if this is a subselection -->
         <div ng-switch-when="select">
@@ -13,7 +13,7 @@
         <!-- default list entry, just the item and its cost -->
         <div ng-switch-default>{{opt.name}} {{opt.cost}}</div>
         </div>
-    </li>  
+    </ls-list-item>  
 
   </ul>
 </div>
