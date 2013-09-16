@@ -24,8 +24,8 @@ Lister.directive("lsSelectView", function () {
         trasclude: 'element',
         replace : false,
         templateUrl : "partials/selectionviewtemplate.html",
-        compile : function (scope, elem, attr) {
-            return function (scope, elem, attr) {
+        compile : function (tElement, tattrs, transclude) {
+            return function (scope, iElement, iAttrs, controller) {
             };
         },
     }
