@@ -18,6 +18,9 @@
 
 
 Lister.directive("lsListItem", function () {
+    var widgetToTemplate = {
+        "slider" : '<input type="range" name="points" min="1" max="10">'
+    };
     return {
         // restricts to use as an attribute
         restrict : 'E', 
@@ -26,14 +29,15 @@ Lister.directive("lsListItem", function () {
         transclude: 'element',  
         templateUrl : "partials/listentrytemplate.html",
        // repeater priority takes precedence 
-        compile : function compile(element, attrs, transclude) {
-            console.log('options', attrs);
-            return function (scope, elem, attr) {
-                for (a in attr) {
-                   // console.log(attr[a]);
+       compile : function (tElement, tattrs, transclude) {
+            return function (scope, iElement, iAttrs, controller) {
+                var type;
+                if(type=scope.opt.type) {
+                    if (type=="slider") {
+                        tElement.append(widgetToTemplate['slider']);                        
+                    } 
                 }
-                scope.$digest();    
-            }
+            };
         }
     }
 });
