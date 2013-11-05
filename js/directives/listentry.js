@@ -17,10 +17,11 @@
  */
 
 
-Lister.directive("lsListItem", function () {
+Lister.directive("lsListItem", function ($compile) {
     var widgetToTemplate = {
-        "slider" : '<input type="range" name="points" min="1" max="10">'
-    };
+        "slider" : '<input type="range" min="1" max="10">'
+    }
+
     return {
         // restricts to use as an attribute
         restrict : 'E', 
@@ -29,12 +30,29 @@ Lister.directive("lsListItem", function () {
         transclude: 'element',  
         templateUrl : "partials/listentrytemplate.html",
        // repeater priority takes precedence 
-       compile : function (tElement, tattrs, transclude) {
+       compile : function (telement, tattrs, transclude) {
+//            telement[0].setAttribute('ng-click', 'selectRange()');
+//            console.log(telement);
             return function (scope, iElement, iAttrs, controller) {
                 var type;
                 if(type=scope.opt.type) {
+                    console.log(scope.opt);
                     if (type=="slider") {
-                        tElement.append(widgetToTemplate['slider']);                        
+                        sliderelem = document.createElement('input');
+                        sliderelem.setAttribute('type','range');
+                        sliderelem.setAttribute('min',scope.opt.min);
+                        sliderelem.setAttribute('max',scope.opt.max);
+                        sliderelem.setAttribute('value', 0);
+//                        sliderelem.setAttribute('style', "width:100%;");
+                        sliderelem.onmouseup = function(e) {
+                            //e.stopPropagation();
+                            e.srcElement.value;
+
+
+                        };
+                        iElement[0].setAttribute('ng-click', 'selectRange()');
+                        $compile(iElement)(scope);                        
+                        iElement.append(sliderelem);
                     } 
                 }
             };
