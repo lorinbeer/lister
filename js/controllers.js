@@ -43,17 +43,17 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         _data = data;
     });
 
-    $scope.select = function(select) {
+    $scope.select = function(data) {
         if (_mode == 'mex') {
-            select.parent = _data.parent;
-            _node = new Node(select.id, select);
+            data.parent = _data.parent;
+            _node = new Node(data.id, data);
             // update cost with this entries cost
-            _node.cost = JSON.parse(select.cost);
+            _node.cost = JSON.parse(data.cost);
         } else if (_mode == 'sel') {
-            if(_node.add(select)) {
-                _node.cost = JSON.parse(_node.cost) + JSON.parse(select.cost);
-            } else if( _node._indexOf(select.name)>=0) {
-                toggle(select);
+            if(_node.add(data)) {
+                _node.cost = JSON.parse(_node.cost) + JSON.parse(data.cost);
+            } else if( _node._indexOf(data.name)>=0) {
+                toggle(data);
             }
         }
         $scope.cost = _node.cost;
@@ -72,6 +72,24 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         }
         $scope.cost = _node.cost;
     }
+
+    $scope.selectRange = function(data) {
+        console.log("select range", data);
+        var rep = _node.find(data.name);
+        if(rep) {
+            _node.cost = JSON.parse(_node.cost) - (JSON.parse(rep._data.volume) * JSON.parse(rep._data.cost));
+            _node.remove(data.name);
+            console.log(_node);
+        }
+        if(data.volume==0) {
+            return;
+        }
+        var node = new Node(data.name, JSON.parse(JSON.stringify(data)));
+        _node.add(node);
+        _node.cost = JSON.parse(_node.cost) + (JSON.parse(data.cost) * JSON.parse(data.volume));
+        $scope.cost = _node.cost;
+    };
+
     /**
      * add button handler
      */
