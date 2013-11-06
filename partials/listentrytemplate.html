@@ -1,11 +1,10 @@
-
 <li>
   <div ng-switch="opt.action">
 <!-- if this is a subselection -->
     <div ng-switch-when="select">
       <h3 class="topcoat-list__header">{{opt.name}}</h3>
       <ul class="topcoat-list__container">
-        <li class="topcoat-list__item" ng-repeat="subopt in opt.options" ng-click="subselect(opt, subopt); $event.stopPropagation()">
+        <li class="topcoat-list__item" ng-repeat="subopt in opt.options">
           {{subopt.name}} {{subopt.cost}}
         </li>
       </ul>
