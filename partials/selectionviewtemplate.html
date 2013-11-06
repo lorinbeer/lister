@@ -1,8 +1,10 @@
 <div class="topcoat-list">
   <h1 class="topcoat-list__header" ng-click="">{{spec.name}}  {{cost}}</h1>
   <ul class="topcoat-list__container">
-    <ls-list-item class="topcoat-list__item" ng-repeat="opt in options" data="opt">
-    </ls-list-item>  
+    <div ng-repeat="opt in options">
+    <ls-list-item class="topcoat-list__item" data="opt">
+    </ls-list-item>
+    </div>
   </ul>
 </div>
 <div class="topcoat-button--large--cta twobar" ng-click="add()">Add</div>
