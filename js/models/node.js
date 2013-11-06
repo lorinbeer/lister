@@ -41,7 +41,7 @@ Node.prototype.find = function (id) {
     }
 }
 
-// add wraps passed in data inside a Node object
+// add - wraps passed in data inside a Node object and adds it as a child
 Node.prototype.add = function (childdata) {
     var childId,
         isNode = false;

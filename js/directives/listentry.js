@@ -39,27 +39,25 @@ Lister.directive("lsListItem", function ($compile) {
             telement[0].setAttribute('ng-click', 'selectRange()');
             return function (scope, iElement, iAttrs, controller) {
                 var type;
-                console.log("FIRST",scope, scope.data);
                 if(type=scope.data.type) {
-                    console.log(scope.data);
                     if (type=="slider") {
                         sliderelem = document.createElement('input');
                         sliderelem.setAttribute('type','range');
                         sliderelem.setAttribute('min',scope.data.min);
                         sliderelem.setAttribute('max',scope.data.max);
                         sliderelem.setAttribute('value', 0);
-//                        sliderelem.setAttribute('style', "width:100%;");
-                        sliderelem.onmouseup = function(e) {
+                        sliderelem.setAttribute('style', "width:80%;");
+                        sliderelem.onchange =  function(e) {
                             //e.stopPropagation();
-                            e.srcElement.value;
+                            scope.data._totalcost = scope.data.cost * e.srcElement.value;
                         };
                         iElement[0].setAttribute('ng-click', 'selectRange()');
                         $compile(iElement)(scope);                        
                         iElement.append(sliderelem);
                     }
-               }
-                        iElement[0].setAttribute('ng-click', 'select(data)'); 
-$compile(iElement)(scope); 
+                }
+                iElement[0].setAttribute('ng-click', 'select(data)'); 
+                $compile(iElement)(scope); 
             };
         }
     }

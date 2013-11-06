@@ -22,11 +22,40 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         _node,
         _mode;
 
-    var toggle = function(s) {
-        _node.remove(s.name);
-        _node.cost = JSON.parse(_node.cost) - JSON.parse(s.cost);
+    var toggle = function(node, data) {
+        node.remove(data.name);
     } 
 
+    /**
+     * update the cost property of a node by counting the cost of all children
+     * calls update on all child nodes
+    */
+    var updateCost = function (node) {
+        var cost = node._data.cost; // set base cost from the nodes data
+        node._forEachChild(function (node,child,index) {
+            // totalcost indicates preprocessing of data, rather than raw cost
+            updateCost(child); 
+            cost = parseInt(cost) + parseInt(child._data._totalcost ? child._data._totalcost : child._data.cost);
+        });
+        node.cost = cost; // set total cost on node
+        $scope.cost = cost; // update display
+    }
+
+    var update = function(node, data) {
+        // attempt to add the node
+        if (node.add(data)) {
+            updateCost(node); // data was not in node, so just update the cost
+        } else if ((i = node._indexOf(data.name)) >= 0) {
+            // data was in node, so check if an update is necsseary. This allows data to mutate between events
+            if (data.cost != data.cost || data._totalcost != data._totalcost) {
+                updateCost(_node, data);
+            } else if (!data._totalcost) {
+                node.remove(data.name);
+                updateCost(_node, data);
+            }
+            // if data._totalcost has not changed, do nothing
+        }
+    }
     $http.get('data/'+entry.uri+'.json').success(function(data) {
         var name = data.name;
         if (!data.unique) {
@@ -50,13 +79,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             // update cost with this entries cost
             _node.cost = JSON.parse(data.cost);
         } else if (_mode == 'sel') {
-            if(_node.add(data)) {
-                _node.cost = JSON.parse(_node.cost) + JSON.parse(data.cost);
-            } else if( _node._indexOf(data.name)>=0) {
-                toggle(data);
-            }
+            update(_node,data);
         }
-        $scope.cost = _node.cost;
     }
 
     $scope.subselect = function(select, subselect) {
