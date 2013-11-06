@@ -55,6 +55,18 @@ Lister.factory('ListerRuler', function () {
         }        
     };
 
+    // autoselect handler
+    var autoselectHandler = function(rule, node) {
+        
+    };
+
+    // track handler
+    var trackHandler = function(rule, tree, context) {
+        console.log(rule);
+        if (rule.action == 'add') {
+        }
+    }
+
     // Validators interpret rules post selection, and return false if validation fails 
     
     // mutually exclusive validator
@@ -82,16 +94,19 @@ Lister.factory('ListerRuler', function () {
     var rulerService = {
         rulemap : {'mex' : {'handler': mexHandler, 'validator': mexValidator},
                    'min' : {'handler': minHandler, 'validator': minEntryValidator},
-                   'max' : {'handler': maxHandler, 'validator': maxEntryValidator}
+                   'max' : {'handler': maxHandler, 'validator': maxEntryValidator},
+                   'addTo' : {'handler': trackHandler}
                   },
 
         //
         interpret : function(rule, tree, context) {
+            console.log(rule);
             return rulerService.rulemap[rule.name].handler(rule, tree, context);
         },
 
         // 
-        validate : function(rules, tree, context) {
+        validate : function(obj) {
+            obj.node
             for (i in rules) {
                 rulerService.rulemap[rule.name].validator(rule, tree, context);
                 // search for rule target(s) in tree
