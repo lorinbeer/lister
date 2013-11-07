@@ -19,7 +19,7 @@
 function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler) {
     var entry = ListerDataService.peak(),
         _data,
-        _node,
+        _tree,
         _mode;
 
     /**
@@ -32,7 +32,6 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             // totalcost indicates preprocessing of data, rather than raw cost
             updateCost(child);
             // we want the totalcost variable to only
-            console.log(child._data._totalcost);
             cost = parseInt(cost) + parseInt("_totalcost" in child._data ? child._data._totalcost : child._data.cost);
         });
         node.cost = cost; // set total cost on node
@@ -46,36 +45,39 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         } else if ((i = node._indexOf(data.id ? data.id : data.name)) >= 0) {
             // data was in node, so check if an update is necsseary. This allows data to mutate between events
             node.remove(data.id ? data.id : data.name);
-            updateCost(_node, data);
+            updateCost(node, data);
         }
     }
+
     $http.get('data/'+entry.uri+'.json').success(function(data) {
         var name = data.name;
         if (!data.unique) {
             name = name + Math.floor((Math.random()*1000)+1);
         }
-        _node = new Node(name, data);
+        _tree = new Tree(new Node(name,data));
+        _data = data; 
         _mode = data.mode ? data.mode : 'sel';
         $scope.spec = data;
         $scope.options = data.options;
         // set the base cost
-        _node.cost = data.cost ? data.cost : 0;
+        var cost = data.cost ? data.cost : 0;
+        _tree.root().cost = cost;
         // bind the node cost to the scope, node cost in our running total, data cost is the baseline
-        $scope.cost = _node.cost;
-        _data = data;
+        $scope.cost = cost;
     });
 
     $scope.select = function(data) {
         if (_mode == 'mex') {
             data.parent = _data.parent;
-            _node = new Node(data.id, data);
+            // throw out the previous tree
+            _tree._root = new Node(data.id, data);
             // update cost with this entries cost
-            _node.cost = JSON.parse(data.cost);
+            _tree.root().cost = parseInt(data.cost);
         } else if (_mode == 'sel') {
-            update(_node,data);
+            update(_tree.root(),data);
         }
     }
-
+/*
     $scope.subselect = function(select, subselect) {
         if ( _node._indexOf(subselect.name)>=0) {
             console.log(select, subselect);
@@ -89,7 +91,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         }
         $scope.cost = _node.cost;
     }
-
+*/
+/*
     $scope.selectRange = function(data) {
         console.log("select range", data);
         var rep = _node.find(data.name);
@@ -106,7 +109,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         _node.cost = JSON.parse(_node.cost) + (JSON.parse(data.cost) * JSON.parse(data.volume));
         $scope.cost = _node.cost;
     };
-
+*/
     /**
      * add button handler
      */
