@@ -20,6 +20,10 @@ var Tree = function(root) {
     this._root = root ? root : new Node('root');
 }
 
+Tree.prototype.root = function() {
+    return this._root;
+}
+
 Tree.prototype.search = function(targetid) {
     var found,
         callback = function(node) {

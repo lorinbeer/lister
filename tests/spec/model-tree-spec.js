@@ -22,6 +22,14 @@ describe("Tree", function() {
         expect(tree._root._id).toEqual('fib_root');
     });
 
+    it("should have a root function", function () {
+        expect(tree.root).toBeDefined();
+    });
+
+    it("should return the root node when called", function () {
+        expect(tree.root()).toEqual(tree._root);
+    });
+
     it("should have a _bft breadth first traversal function", function () {
         expect(tree._bft).toBeDefined();
     });
