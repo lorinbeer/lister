@@ -47,12 +47,11 @@ Lister.directive("lsListItem", function ($compile) {
                         sliderelem.setAttribute('max',scope.data.max);
                         sliderelem.setAttribute('value', 0);
                         sliderelem.setAttribute('style', "width:80%;");
+                        scope.data._totalcost = scope.data.cost * 0;
                         sliderelem.onchange =  function(e) {
                             //e.stopPropagation();
                             scope.data._totalcost = scope.data.cost * e.srcElement.value;
                         };
-                        iElement[0].setAttribute('ng-click', 'selectRange()');
-                        $compile(iElement)(scope);                        
                         iElement.append(sliderelem);
                     }
                 }
