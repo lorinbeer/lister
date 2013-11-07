@@ -5,12 +5,14 @@ describe("Tree", function() {
 
     beforeEach(function() {
         node = new Node('fib_root', null);
+        tree = new Tree(node);
         fb = [0,1];
         for (var i = 0; i < n; i = i + 1) {
             fb.push(fb[fb.length-1] + fb[fb.length-2]);
-            node._children.push(new Node('child' + i, fb[fb.length-1]));
+            var child = new Node('child' + i, fb[fb.length-1]);
+            child.parent = node;
+            node._children.push(child);
         }
-        tree = new Tree(node);
     });
 
     it("constructor should create new tree with root node", function () {
@@ -28,6 +30,15 @@ describe("Tree", function() {
 
     it("should return the root node when called", function () {
         expect(tree.root()).toEqual(tree._root);
+    });
+
+    it("should have an address function", function () {
+        expect(tree.address).toBeDefined();
+    });
+
+    it("should return the address of a node when called", function () {
+        var node = tree._root._children[0];
+        expect(tree.address(node)).toEqual('fib_root.child0');    
     });
 
     it("should have a _bft breadth first traversal function", function () {

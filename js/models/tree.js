@@ -18,6 +18,7 @@
 
 var Tree = function(root) {
     this._root = root ? root : new Node('root');
+    this._root.parent = null;
 }
 
 Tree.prototype.root = function() {
@@ -33,6 +34,7 @@ Tree.prototype.search = function(targetid) {
         }
     }
     this._bft(callback);
+    console.log(found);
     return found;
 }
 
@@ -40,6 +42,7 @@ Tree.prototype.search = function(targetid) {
 Tree.prototype.addChild = function(targetid, child) {
     var callback = function(node) {
         if (node._id == targetid) {
+            child.parent = node;
             node.add(child);
         }
     }
@@ -51,6 +54,19 @@ Tree.prototype.addChild = function(targetid, child) {
     }
 
     this._bft(callback);        
+}
+
+Tree.prototype.address = function(node) {
+    console.log("tree address",node);
+    var cnode = node.parent,
+        addr = node._id;
+    while (cnode.parent != null) {
+        console.log(cnode);
+        addr = (cnode._id) + '.' + addr;
+        console.log(addr);
+        cnode = cnode.parent();
+    }
+    return cnode._id + '.' + addr;
 }
 
 // breadth first traversal
