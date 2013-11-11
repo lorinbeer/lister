@@ -17,7 +17,7 @@
  */
 
 var Lister = 
-    angular.module('lister', []).
+    angular.module('lister',  ['ngRoute']).
         config(['$routeProvider', function($routeProvider) {
             $routeProvider.
                 when('/index', {templateUrl: 'partials/menu.html', controller: MenuCtrl }).
@@ -47,7 +47,7 @@ Lister.factory('ListerDataService', function ($http) {
                 data.total = 0;
                 // build a new tree from data
                 dataServiceObj._tree = new Tree();
-                dataServiceObj._tree._root.fromObj(data);
+                dataServiceObj._tree.root.fromObj(data);
             });
         },
 

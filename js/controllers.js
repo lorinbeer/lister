@@ -27,12 +27,12 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
      * calls update on all child nodes
     */
     var updateCost = function (node) {
-        var cost = node._data.cost; // set base cost from the nodes data
+        var cost = node.data.cost; // set base cost from the nodes data
         node._forEachChild(function (node,child,index) {
             // totalcost indicates preprocessing of data, rather than raw cost
             updateCost(child);
             // we want the totalcost variable to only
-            cost = parseInt(cost) + parseInt("_totalcost" in child._data ? child._data._totalcost : child._data.cost);
+            cost = parseInt(cost) + parseInt("_totalcost" in child.data ? child.data._totalcost : child.data.cost);
         });
         node.cost = cost; // set total cost on node
         $scope.cost = cost; // update display
@@ -61,7 +61,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         $scope.options = data.options;
         // set the base cost
         var cost = data.cost ? data.cost : 0;
-        _tree.root().cost = cost;
+        _tree.root.cost = cost;
         // bind the node cost to the scope, node cost in our running total, data cost is the baseline
         $scope.cost = cost;
     });
@@ -70,15 +70,34 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         if (_mode == 'mex') {
             data.parent = _data.parent;
             // throw out the previous tree
-            _tree._root = new Node(data.id, data);
+            _tree.root = new Node(data.id, data);
             // update cost with this entries cost
             _tree.root().cost = parseInt(data.cost);
         } else if (_mode == 'sel') {
-            update(_tree.root(),data);
+            update(_tree.root,data);
+            console.log(data);
+            console.log(findparent(data.id,_data).name);
         }
     }
+
+    
+    var findparent = function(id,data) {
+        var curopt = data;
+        var queue = [data];
+
+        while(queue) {
+            for(each in queue[0].options) {
+                if (curopt.options[each].id == id || curopt.options[each].name == id) {
+                    return curopt;
+                }
+            }
+            queue = queue.concat(queue[0].options);
+            queue.shift();
+        }
+    }
+
+    
 /*
-    $scope.subselect = function(select, subselect) {
         if ( _node._indexOf(subselect.name)>=0) {
             console.log(select, subselect);
             toggle(subselect);
@@ -131,10 +150,11 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
 
     $scope.nav = function(entry) {
         // List Navigation descends until it hits a 'select' page
-        if (entry._data.action=="nav" || !entry._data.action) {
-            $http.get('data/'+entry._data.uri+'.json').success(function(data) {
+        if (entry.data.action=="nav" || !entry.data.action) {
+            $http.get('data/'+entry.data.uri+'.json').success(function(data) {
+                console.log(data);
                 $scope.List = data;
-                ListerDataService.push(entry._data);
+                ListerDataService.push(entry.data);
                 window.location.href = "#/mainmenu"; 
             });
         } else if (entry.action == "select") {

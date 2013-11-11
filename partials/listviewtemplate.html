@@ -1,10 +1,10 @@
 <div class="topcoat-list">
     <ul class="topcoat-list__container">
-        <li class="topcoat-list__item" ng-repeat="child in tree._root._children" ng-click="nav(child)">
+        <li class="topcoat-list__item" ng-repeat="child in tree.root.children" ng-click="nav(child)">
             <div class="list_item">
               <div class="list_contents">
-                <span>{{child._data.name}}</span>
-                <div><span>Total:</span>{{child._data.total}}</div>
+                <span>{{child.data.name}}</span>
+                <div><span>Total:</span>{{child.data.total}}</div>
               </div>
               <div class="list_widget" 
                    ls-toggle-widget 
@@ -16,8 +16,8 @@
             <div ng-switch="child.expand">
                 <div class="topcoat-list" ng-switch-when="true">
                     <ul class="topcoat-list__container">
-                        <li class="topcoat-list__item" id="{{child._id+'_sublist'}}" ng-repeat="subchild in child._children">
-                            <div>{{subchild._data.name}}</div>
+                        <li class="topcoat-list__item" id="{{child.id+'_sublist'}}" ng-repeat="subchild in child._children">
+                            <div>{{subchild.data.name}}</div>
                             <div>Cost: {{subchild.cost}}</div>
                         </li>
                     </ul>

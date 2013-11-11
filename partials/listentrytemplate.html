@@ -4,7 +4,10 @@
     <div ng-switch-when="select">
       <h3 class="topcoat-list__header">{{opt.name}}</h3>
       <ul class="topcoat-list__container">
-        <li class="topcoat-list__item" ng-repeat="subopt in data.options">
+        <li class="topcoat-list__item"
+            ng-repeat="subopt in data.options"
+            ng-animate="{enter: 'animate-enter'}"
+            > 
           {{subopt.name}} {{subopt.cost}}
         </li>
       </ul>

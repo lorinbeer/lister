@@ -18,26 +18,26 @@
 
 var Node = function (id, data, children) {
     this._type = 'node';
-    this._id = id;
-    this._data = data;
-    this._children = [];
+    this.id = id;
+    this.data = data;
+    this.children = [];
     if (typeof children == 'array') {
         for (var i in children) {
-            this._children.push(children[i]); 
+            this.children.push(children[i]); 
         }
     }
 }
 
 // returns length of children array
 Node.prototype.length = function () {
-    return this._children.length;
+    return this.children.length;
 }
 
 // returns first node with id
 Node.prototype.find = function (id) {
     var i = this._indexOf(id);
     if (i >= 0) {
-        return this._children[i];
+        return this.children[i];
     }
 }
 
@@ -46,7 +46,7 @@ Node.prototype.add = function (childdata) {
     var childId,
         isNode = false;
     if (childdata._type == this._type) {
-        childId = childdata._id;
+        childId = childdata.id;
         isNode = true;
     } else {
         childId = childdata.id ? childdata.id : childdata.name;
@@ -58,9 +58,9 @@ Node.prototype.add = function (childdata) {
         }
     }
     if (isNode) {
-        this._children.push(childdata);
+        this.children.push(childdata);
     } else {    
-        this._children.push(new Node(childId, childdata));
+        this.children.push(new Node(childId, childdata));
     }
     return true;
 }
@@ -68,15 +68,15 @@ Node.prototype.add = function (childdata) {
 // removes all instances of the id
 Node.prototype.remove = function (id) {
     this._forEachChild(function (node, child, i) {
-        if(id == child._id) {
-            node._children.splice(i,1);
+        if(id == child.id) {
+            node.children.splice(i,1);
         }
     });
 }
 
 // remove all children
 Node.prototype.clear = function() {
-    this._children = [];
+    this.children = [];
 }
 //
 Node.prototype.fromJSON = function(jsonstr) {
@@ -92,7 +92,7 @@ Node.prototype.fromObj = function(data) {
 
 // toJSON implemented to control data representation
 Node.prototype.toJSON = function() {
-    var jsondata = {'id' : this._id,
+    var jsondata = {'id' : this.id,
                     'data' : this._data,
                     'children' : []
     };
@@ -104,8 +104,8 @@ Node.prototype.toJSON = function() {
 
 // pass callback function Node,Child,Index
 Node.prototype._forEachChild = function (cb) {
-    for (var i = 0; i < this._children.length; i = i + 1) {
-        cb(this, this._children[i], i);
+    for (var i = 0; i < this.children.length; i = i + 1) {
+        cb(this, this.children[i], i);
     }
 }
 
@@ -114,7 +114,7 @@ Node.prototype._indexOf = function (id) {
     var index = -1;
     // using for each turns this into an O(n) time alg in all cases
     this._forEachChild(function (node, child, i) {
-        if (id == child._id) {
+        if (id == child.id) {
             index = i
         }
     });

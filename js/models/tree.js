@@ -17,13 +17,13 @@
  */
 
 var Tree = function(root) {
-    this._root = root ? root : new Node('root');
-    this._root.parent = null;
+    this.root = root ? root : new Node('root');
+    this.root.parent = null;
 }
 
-Tree.prototype.root = function() {
-    return this._root;
-}
+/*Tree.prototype.root = function() {
+    return this.root;
+}*/
 
 Tree.prototype.search = function(targetid) {
     var found,
@@ -73,11 +73,11 @@ Tree.prototype.address = function(node) {
 Tree.prototype._bft = function(callback) {
     var queue = [];
     // add root node's children
-    queue = queue.concat(this._root._children);
+    queue = queue.concat(this.root.children);
     while (queue.length > 0) {
         // always target first node in queue, add its children
         callback(queue[0]);
-        queue = queue.concat(queue[0]._children);
+        queue = queue.concat(queue[0].children);
         queue.shift();
     }    
 }
