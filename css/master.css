@@ -1,4 +1,68 @@
+.animation-with-easing {
 
+  /* linear animation */
+  transition-timing-function: linear;
+
+  /* in easing animation */
+  transition-timing-function: ease-in;
+
+  /* in-out easing animation */
+  transition-timing-function: ease-in-out;
+
+  /* ease-in-quad easing animation */
+  transition-timing-function: cubic-bezier(0.550, 0.085, 0.680, 0.530);
+
+  /* ease-in-transition-timing-function: cubic easing animation */
+  transition-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+
+  /* ease-in-out-quart easing animation */
+  transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+
+  /* ease-in-out-back easing animation */
+  transition-timing-function: cubic-bezier(0.680, -0.550, 0.265, 1.550);
+
+  /* view the Github link for more CSS easing animations */
+}
+
+
+.custom-enter,
+.custom-leave,
+.custom-move {
+  -webkit-transition: 1s linear all;
+  -moz-transition: 1s linear all;
+  -o-transition: 1s linear all;
+  transition: 1s linear all;
+  position:relative;
+}
+
+.custom-enter {
+  left:-10px;
+  opacity:0;
+}
+.custom-enter.custom-enter-active {
+  left:0;
+  opacity:1;
+}
+
+.custom-leave {
+  left:0;
+  opacity:1;
+}
+.custom-leave.custom-leave-active {
+  left:-10px;
+  opacity:0;
+}
+
+.custom-move {
+  opacity:0.5;
+}
+.custom-move.custom-move-active {
+  opacity:1;
+}
+
+.glowing-border {
+   background-color: #AAAAAA; 
+}
 
 .button {
   width:25%;
@@ -18,6 +82,10 @@
     height: 0;
     font-size:0;
     line-height:0; 
+}
+
+.selected_item {
+  background-color: #5460B4;
 }
 
 .list_contents {
