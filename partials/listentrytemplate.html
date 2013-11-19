@@ -1,7 +1,7 @@
 <li class="item_selected">
   <div ng-switch="data.action">
 <!-- if this is a subselection -->
-    <div ng-switch-when="select">
+<!--    <div ng-switch-when="select">
       <h3 class="topcoat-list__header">{{opt.name}}</h3>
       <ul class="topcoat-list__container">
         <li class="topcoat-list__item"
@@ -11,7 +11,6 @@
           {{subopt.name}} {{subopt.cost}}
         </li>
       </ul>
-    </div>
+    </div> -->
     <div ng-switch-default>{{data.name}} {{data.cost}}</div>
-  </div>
 </li>

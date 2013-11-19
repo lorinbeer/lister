@@ -1,0 +1,10 @@
+<li class="item_selected">
+      <h3 class="topcoat-list__header">{{opt.description}}</h3>
+      <ul class="topcoat-list__container">
+        <li class="topcoat-list__item"
+            ng-repeat="subopt in data.options"
+            ng-click="select(subopt);">
+          {{subopt.name}} {{subopt.cost}}
+        </li>
+      </ul>
+</li>

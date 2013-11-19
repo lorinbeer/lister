@@ -17,7 +17,7 @@
  */
 
 
-Lister.directive("lsListItem", function ($compile) {
+Lister.directive("lsListItem", function ($compile, $http) {
     var widgetToTemplate = {
         "slider" : '<input type="range" min="1" max="10">'
     }
@@ -36,9 +36,12 @@ Lister.directive("lsListItem", function ($compile) {
         templateUrl : "partials/listentrytemplate.html",
        // repeater priority takes precedence 
        compile : function (telement, tattrs, transclude) {
-            telement[0].setAttribute('ng-click', 'selectRange()');
+            console.log("HERE WE ARE");
+
             return function (scope, iElement, iAttrs, controller) {
                 var type;
+
+
                 if(type=scope.data.type) {
                     if (type=="slider") {
                         sliderelem = document.createElement('input');
@@ -54,6 +57,25 @@ Lister.directive("lsListItem", function ($compile) {
                         };
                         iElement.append(sliderelem);
                     }
+                } else if(type=="sublist" || scope.data.options) {
+                   // draw as a sublist
+                   console.log("WE ARE A SUBLIST");
+                   var parent = iElement.parent();
+                   console.log(iElement.remove());
+
+                   $http.get('partials/selectionviewtemplate.html').success(function(data) {
+                        data = '<li>'+data+'</li>';
+                        scope.options = scope.data.options;
+                        elem = document.createElement('li');
+                        elem.innerHTML = data;
+                        parent.append(elem);
+                        console.log(elem);
+
+                        $compile(parent)(scope);
+                   });
+
+
+
                 }
                 iElement[0].setAttribute('ng-click', 'select(data)'); 
                 $compile(iElement)(scope); 

@@ -34,12 +34,14 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             // we want the totalcost variable to only
             cost = parseInt(cost) + parseInt("_totalcost" in child.data ? child.data._totalcost : child.data.cost);
         });
+
         node.cost = cost; // set total cost on node
         $scope.cost = cost; // update display
     }
 
     var update = function(node, data) {
         // attempt to add the node
+        data.selected = !data.selected;
         if (node.add(data)) {
             updateCost(node); // data was not in node, so just update the cost
         } else if ((i = node._indexOf(data.id ? data.id : data.name)) >= 0) {
@@ -68,6 +70,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 
     $scope.select = function(data) {
         if (_mode == 'mex') {
+            data.selected = false;
             data.parent = _data.parent;
             // throw out the previous tree
             _tree.root = new Node(data.id, data);
@@ -80,7 +83,6 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         }
     }
 
-    
     var findparent = function(id,data) {
         var curopt = data;
         var queue = [data];
