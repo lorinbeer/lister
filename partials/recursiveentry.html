@@ -1,8 +1,9 @@
 <div class="topcoat-list">
-  <h1 class="topcoat-list__header" ng-click="">{{spec.name}}  {{cost}}</h1>
+  {{data.name }} {{cost}}
+  <h1 class="topcoat-list__header" ng-click="">{{data.name}}  {{cost}}</h1>
   <ul class="topcoat-list__container">
-    <div ng-repeat="d in options">
-    <ls-list-item class="topcoat-list__item" ng-class="{selected_item:data.selected}" data="d" select="select" 
+    <div ng-repeat="data in options">
+    <ls-list-item class="topcoat-list__item" ng-class="{selected_item:data.selected}" data="data" select="select" 
                 ng-animate="'custom'" 
     >
     </ls-list-item>

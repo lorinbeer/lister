@@ -78,21 +78,21 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             _tree.root().cost = parseInt(data.cost);
         } else if (_mode == 'sel') {
             update(_tree.root,data);
-            console.log(data);
-            console.log(findparent(data.id,_data).name);
         }
     }
 
     var findparent = function(id,data) {
         var curopt = data;
         var queue = [data];
-
         while(queue) {
+        if(queue[0].options) {
             for(each in queue[0].options) {
-                if (curopt.options[each].id == id || curopt.options[each].name == id) {
+                console.log(each, queue[0].options[each]);
+                if (queue[0].options[each].id == id || queue[0].options[each].name == id) {
                     return curopt;
                 }
             }
+        }
             queue = queue.concat(queue[0].options);
             queue.shift();
         }
