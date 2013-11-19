@@ -63,15 +63,13 @@ Lister.directive("lsListItem", function ($compile, $http) {
                    var parent = iElement.parent();
                    console.log(iElement.remove());
 
-                   $http.get('partials/selectionviewtemplate.html').success(function(data) {
-                        data = '<li>'+data+'</li>';
+                   $http.get('partials/recursiveentry.html').success(function(data) {
+                console.log('how many times?');
                         scope.options = scope.data.options;
-                        elem = document.createElement('li');
+                        var elem = document.createElement('li');
                         elem.innerHTML = data;
+                        $compile(elem)(scope);
                         parent.append(elem);
-                        console.log(elem);
-
-                        $compile(parent)(scope);
                    });
 
 
