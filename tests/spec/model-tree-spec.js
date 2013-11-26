@@ -33,6 +33,18 @@ describe("Tree", function() {
         expect(tree.address(node)).toEqual('fib_root.child0');    
     });
 
+    it("should have a check address function", function () {
+        expect(tree.checkaddress).toBeDefined();
+    });
+
+    it("should return true for an existing address", function () {
+        expect(tree.checkaddress('fib_root.child0')).toEqual(true);
+    });
+
+    it("should return false for a nonexisting address", function () {
+      expect(tree.checkaddress('foo.bar')).toEqual(false);  
+    });
+
     it("should have a _bft breadth first traversal function", function () {
         expect(tree._bft).toBeDefined();
     });

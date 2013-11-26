@@ -37,7 +37,6 @@ Node.prototype.length = function () {
 // returns first node with id
 Node.prototype.find = function (id) {
     var i = this._indexOf(id);
-    console.log(i);
     if (i >= 0) {
         return this.children[i];
     }
@@ -62,12 +61,10 @@ Node.prototype.add = function (childdata) {
     if (isNode) {
         this.children.push(childdata);
     } else {
-        console.log("we are pushing children");
         temp = new Node(childId, childdata);  
         this.children.push(temp);
         childdata = temp;
     }
-    console.log(this);
     return childdata;
 }
 

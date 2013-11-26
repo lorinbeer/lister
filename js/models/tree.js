@@ -59,8 +59,8 @@ Tree.prototype.addChild = function(targetid, child) {
     this._bft(callback);        
 }
 
+//returns delimited string of the ids in this nodes ancestry to the root node
 Tree.prototype.address = function(node) {
-    console.log("tree address",node);
     var cnode = node.parent,
         addr = node.id;
     while (cnode.parent != null) {
@@ -70,6 +70,19 @@ Tree.prototype.address = function(node) {
         cnode = cnode.parent();
     }
     return cnode.id + '.' + addr;
+}
+
+Tree.prototype.checkaddress = function(addr) {
+    var heritage = addr.split('.'),
+        cnode = this.root;
+    
+    if (!heritage.length || cnode.id != heritage[0]) return false;
+
+    for (var i = 1; i < heritage.length; i = i + 1) {
+        if (!(cnode = cnode.find(heritage[i]))) {
+        }
+    }
+    return true;
 }
 
 // breadth first traversal
