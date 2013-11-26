@@ -7,13 +7,13 @@ describe("Node", function() {
         fb = [0,1];
         for (var i = 0; i < n; i = i + 1) {
             fb.push(fb[fb.length-1] + fb[fb.length-2]);
-            node._children.push(new Node('child' + i, fb[fb.length-1]));
+            node.children.push(new Node('child' + i, fb[fb.length-1]));
         }
     });
 
     it("should result in node with " + n + " children after setup", function () {
-        expect(node._children).toBeDefined();
-        expect(node._children.length).toEqual(n);
+        expect(node.children).toBeDefined();
+        expect(node.children.length).toEqual(n);
     });
 
     // 'private' functions
@@ -24,8 +24,8 @@ describe("Node", function() {
 
     it("should exist and return index of child by id passed to _indexOf", function () {
         var index = 5,
-            target = node._children[index];
-        expect(node._indexOf(target._id)).toEqual(index);
+            target = node.children[index];
+        expect(node._indexOf(target.id)).toEqual(index);
     });
 
     it("should have a _forEachChild function", function() {
@@ -41,7 +41,7 @@ describe("Node", function() {
 
     it("forEachChild should pass Node, Child, Index to callback", function () {
         var index = 0;
-            cb = function(n, c, i) { expect(n).toEqual(node); expect(c).toEqual(node._children[index]); expect(index).toEqual(i); index = index + 1; };
+            cb = function(n, c, i) { expect(n).toEqual(node); expect(c).toEqual(node.children[index]); expect(index).toEqual(i); index = index + 1; };
             node._forEachChild(cb);
     });
 
@@ -49,13 +49,13 @@ describe("Node", function() {
 
     it("should return it's length", function () {
         expect(node.length).toBeDefined();
-        expect(node.length()).toEqual(node._children.length);
+        expect(node.length()).toEqual(node.children.length);
     });
 
     it("should find a node by id present as a child ", function () {
         var index = 4,
-            id  = node._children[index];
-        expect(node.find(id)).toEqual(node._children[index].id);
+            id  = node.children[index];
+        expect(node.find(id)).toEqual(node.children[index].id);
     });
 
     it("should fail to find a nonexistant node by id", function () {
@@ -70,14 +70,14 @@ describe("Node", function() {
         var child = {'id' : 'newchild', 'data' : 'foobar'};
         node.add(child);
         expect(node.length()).toEqual(n+1);
-        expect(node._children[node._children.length-1]._id).toEqual(child.id);
+        expect(node.children[node.children.length-1]._id).toEqual(child.id);
     });
 
     it("should add a node as a child", function () {
         var nodechild = new Node('foobar', {'foo':'bar'});
         node.add(nodechild);
         expect(node.length()).toEqual(n+1);
-        expect(node._children[node._children.length-1]._id).toEqual(nodechild._id);
+        expect(node.children[node.children.length-1]._id).toEqual(nodechild._id);
     });
  
     it("should increment length on add", function () {
@@ -87,19 +87,19 @@ describe("Node", function() {
     });
 
     it("should return false and not add an element with a duplicate id", function () {
-        var child = {'id' : node._children[0]._id, 'data' : 'foobar'};
+        var child = {'id' : node.children[0]._id, 'data' : 'foobar'};
         expect(node.add(child)).toBe(false);
         expect(node.length()).toEqual(n);
     });
 
     it("should return false and not add an element with a duplicate id when unique is specified to be true", function () {
-        var child = {'id' : node._children[0]._id, 'data' : 'foobar', 'unique' : 'true'};
+        var child = {'id' : node.children[0]._id, 'data' : 'foobar', 'unique' : 'true'};
         expect(node.add(child)).toBe(false);
         expect(node.length()).toEqual(n);
     });
 
     it("should return true and add an element with a duplicate id when unique is specified to be false", function () {
-        var child = {'id' : node._children[0]._id, 'data' : 'foobar', 'unique' : 'false'};
+        var child = {'id' : node.children[0]._id, 'data' : 'foobar', 'unique' : 'false'};
         expect(node.add(child)).toBe(true);
         expect(node.length()).toEqual(n+1);
     });
@@ -110,10 +110,10 @@ describe("Node", function() {
 
     it("should remove specified child", function () {
         var index = 5,
-            target = node._children[index]._id;
+            target = node.children[index]._id;
         node.remove(target);
         expect(node.length()).toEqual(n-1);
-        expect(node._children[index]).not.toBe(target);
+        expect(node.children[index]).not.toBe(target);
     });
 
     it("should have a clear function", function () {
@@ -123,7 +123,7 @@ describe("Node", function() {
     it("should have delete all children with call to clear", function () {
         node.clear();
         expect(node.length()).toEqual(0);
-        expect(node._children).toEqual([]);
+        expect(node.children).toEqual([]);
     });
 
     it("should have a toJSON function", function () {
