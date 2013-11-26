@@ -54,8 +54,8 @@ describe("Node", function() {
 
     it("should find a node by id present as a child ", function () {
         var index = 4,
-            id  = node.children[index];
-        expect(node.find(id)).toEqual(node.children[index].id);
+            id  = node.children[index].id;
+        expect(node.find(id).id).toEqual(node.children[index].id);
     });
 
     it("should fail to find a nonexistant node by id", function () {
@@ -70,14 +70,14 @@ describe("Node", function() {
         var child = {'id' : 'newchild', 'data' : 'foobar'};
         node.add(child);
         expect(node.length()).toEqual(n+1);
-        expect(node.children[node.children.length-1]._id).toEqual(child.id);
+        expect(node.children[node.children.length-1].id).toEqual(child.id);
     });
 
     it("should add a node as a child", function () {
         var nodechild = new Node('foobar', {'foo':'bar'});
         node.add(nodechild);
         expect(node.length()).toEqual(n+1);
-        expect(node.children[node.children.length-1]._id).toEqual(nodechild._id);
+        expect(node.children[node.children.length-1].id).toEqual(nodechild.id);
     });
  
     it("should increment length on add", function () {
@@ -87,20 +87,20 @@ describe("Node", function() {
     });
 
     it("should return false and not add an element with a duplicate id", function () {
-        var child = {'id' : node.children[0]._id, 'data' : 'foobar'};
+        var child = {'id' : node.children[0].id, 'data' : 'foobar'};
         expect(node.add(child)).toBe(false);
         expect(node.length()).toEqual(n);
     });
 
     it("should return false and not add an element with a duplicate id when unique is specified to be true", function () {
-        var child = {'id' : node.children[0]._id, 'data' : 'foobar', 'unique' : 'true'};
+        var child = {'id' : node.children[0].id, 'data' : 'foobar', 'unique' : 'true'};
         expect(node.add(child)).toBe(false);
         expect(node.length()).toEqual(n);
     });
 
     it("should return true and add an element with a duplicate id when unique is specified to be false", function () {
-        var child = {'id' : node.children[0]._id, 'data' : 'foobar', 'unique' : 'false'};
-        expect(node.add(child)).toBe(true);
+        var child = {'id' : node.children[0].id, 'data' : 'foobar', 'unique' : 'false'};
+        expect(node.add(child)).toBeTruthy();
         expect(node.length()).toEqual(n+1);
     });
 
@@ -110,7 +110,7 @@ describe("Node", function() {
 
     it("should remove specified child", function () {
         var index = 5,
-            target = node.children[index]._id;
+            target = node.children[index].id;
         node.remove(target);
         expect(node.length()).toEqual(n-1);
         expect(node.children[index]).not.toBe(target);
