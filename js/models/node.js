@@ -33,9 +33,11 @@ Node.prototype.length = function () {
     return this.children.length;
 }
 
+
 // returns first node with id
 Node.prototype.find = function (id) {
     var i = this._indexOf(id);
+    console.log(i);
     if (i >= 0) {
         return this.children[i];
     }
@@ -59,10 +61,14 @@ Node.prototype.add = function (childdata) {
     }
     if (isNode) {
         this.children.push(childdata);
-    } else {    
-        this.children.push(new Node(childId, childdata));
+    } else {
+        console.log("we are pushing children");
+        temp = new Node(childId, childdata);  
+        this.children.push(temp);
+        childdata = temp;
     }
-    return true;
+    console.log(this);
+    return childdata;
 }
 
 // removes all instances of the id
@@ -115,7 +121,7 @@ Node.prototype._indexOf = function (id) {
     // using for each turns this into an O(n) time alg in all cases
     this._forEachChild(function (node, child, i) {
         if (id == child.id) {
-            index = i
+            index = i;
         }
     });
     return index;

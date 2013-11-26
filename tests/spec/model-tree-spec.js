@@ -1,5 +1,5 @@
 describe("Tree", function() {
-    var tree,
+        var tree,
         n = 20,
         fb;
 
@@ -11,25 +11,17 @@ describe("Tree", function() {
             fb.push(fb[fb.length-1] + fb[fb.length-2]);
             var child = new Node('child' + i, fb[fb.length-1]);
             child.parent = node;
-            node._children.push(child);
+            node.children.push(child);
         }
     });
 
     it("constructor should create new tree with root node", function () {
         var t = new Tree();
-        expect(t._root).toBeDefined();
+        expect(t.root).toBeDefined();
     });
     
     it("constructor should create new tree with passed node as root", function () {
-        expect(tree._root._id).toEqual('fib_root');
-    });
-
-    it("should have a root function", function () {
-        expect(tree.root).toBeDefined();
-    });
-
-    it("should return the root node when called", function () {
-        expect(tree.root()).toEqual(tree._root);
+        expect(tree.root.id).toEqual('fib_root');
     });
 
     it("should have an address function", function () {
@@ -37,7 +29,7 @@ describe("Tree", function() {
     });
 
     it("should return the address of a node when called", function () {
-        var node = tree._root._children[0];
+        var node = tree.root.children[0];
         expect(tree.address(node)).toEqual('fib_root.child0');    
     });
 
@@ -55,9 +47,9 @@ describe("Tree", function() {
 
     it("should add a node as a child of some descendant of root with addChild()", function () {
         var child = new Node("badass", {"funky":"dory", "happy":"ohsohappy"});
-            target = tree._root._children[4]; // target the 5th child arbitrarily
-        tree.addChild(target._id, child);
-        expect(target._children[0]._id).toEqual(child._id);
+            target = tree.root.children[4]; // target the 5th child arbitrarily
+        tree.addChild(target.id, child);
+        expect(target.children[0].id).toEqual(child.id);
     });
 
 });

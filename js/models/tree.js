@@ -28,20 +28,23 @@ var Tree = function(root) {
 Tree.prototype.search = function(targetid) {
     var found,
         callback = function(node) {
-        if (node._id == targetid) {
+        if (node.id == targetid) {
             found = node;
             return true;
         }
     }
     this._bft(callback);
-    console.log(found);
     return found;
 }
 
 //adds 'node' as a child to tree-node with target id
 Tree.prototype.addChild = function(targetid, child) {
+    if(targetid=='root') {
+        this.root.add(child);
+        return;
+    }
     var callback = function(node) {
-        if (node._id == targetid) {
+        if (node.id == targetid) {
             child.parent = node;
             node.add(child);
         }
@@ -59,19 +62,19 @@ Tree.prototype.addChild = function(targetid, child) {
 Tree.prototype.address = function(node) {
     console.log("tree address",node);
     var cnode = node.parent,
-        addr = node._id;
+        addr = node.id;
     while (cnode.parent != null) {
         console.log(cnode);
-        addr = (cnode._id) + '.' + addr;
+        addr = (cnode.id) + '.' + addr;
         console.log(addr);
         cnode = cnode.parent();
     }
-    return cnode._id + '.' + addr;
+    return cnode.id + '.' + addr;
 }
 
 // breadth first traversal
 Tree.prototype._bft = function(callback) {
-    var queue = [];
+    var queue = [this.root];
     // add root node's children
     queue = queue.concat(this.root.children);
     while (queue.length > 0) {
