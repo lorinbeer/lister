@@ -21,6 +21,20 @@ var Tree = function(root) {
     this.root.parent = null;
 }
 
+
+var TreeIterator = function(tree) {
+    this.node = tree.root;
+}
+
+TreeIterator.prototype.go = function(id) {
+    for (var i = 0; i < this.node.children.length; i = i + 1) {
+        if (this.node.children[i].id == id) {
+            this.node = this.node.children[i];
+            break;
+        }
+    }
+}
+
 /*Tree.prototype.root = function() {
     return this.root;
 }*/
@@ -38,38 +52,47 @@ Tree.prototype.search = function(targetid) {
 }
 
 //adds 'node' as a child to tree-node with target id
-Tree.prototype.addChild = function(targetid, child) {
+Tree.prototype.addchild = function(targetid, child) {
     if(targetid=='root') {
         this.root.add(child);
         return;
     }
     var callback = function(node) {
-        if (node.id == targetid) {
+        console.log(node); 
+       if (node.id == targetid) {
             child.parent = node;
             node.add(child);
         }
     }
-
+/*
     if (child.unique) {
        if (this.search(child.id)) {
             return false;
         } 
     }
-
+*/
     this._bft(callback);        
 }
 
 //returns delimited string of the ids in this nodes ancestry to the root node
-Tree.prototype.address = function(node) {
-    var cnode = node.parent,
-        addr = node.id;
-    while (cnode.parent != null) {
-        console.log(cnode);
-        addr = (cnode.id) + '.' + addr;
-        console.log(addr);
-        cnode = cnode.parent();
+Tree.prototype.address = function(id) {
+    var chain = [],
+        recgen = function (targetid, n, chain) {
+        if (targetid == n.id) {
+            chain.push(n.id);
+            return true;
+        }
+        if (n.children) {
+            for (child in n.children) {
+                if (recgen(targetid, n.children[child], chain)) {
+                    chain.push(n.id);
+                    return true; 
+                }
+            }
+        }
     }
-    return cnode.id + '.' + addr;
+    recgen(id,this.root,chain);
+    return chain.reverse().join('.');
 }
 
 Tree.prototype.checkaddress = function(addr) {
@@ -80,9 +103,48 @@ Tree.prototype.checkaddress = function(addr) {
 
     for (var i = 1; i < heritage.length; i = i + 1) {
         if (!(cnode = cnode.find(heritage[i]))) {
+            return false;
         }
     }
     return true;
+}
+/*
+Tree.prototype.lookup(addr) {
+    var ids = addr.split('.'),
+        currentnode = this.root;
+    for (var i = 0; i < ids.length; i = i+1) {
+        for (var j = 0; j < currentnode.children.length; j = j+1) {
+            if (currentnode.children[j].id == ids[i]) {
+                currentnode = currentnode.children[j];
+                break;
+            }
+        }
+    }   
+}
+*/
+Tree.prototype.splice = function(sourcetree, id) {
+    var ids = sourcetree.address(id),
+        source = new TreeIterator(sourcetree),
+        self = new TreeIterator(this);
+    console.log(id);
+    ids = ids.split('.');
+     
+    for (var i = 1; i  < ids.length; i = i+1) {
+        source.go(ids[i]);
+        self.node.add(source.node);
+        self.go(ids[i]); 
+    }
+}
+
+Tree.prototype.prune = function(addr) {
+    var ids = addr.split('.'),
+        it = new TreeIterator(this);
+    for (var i = 1; i < ids.length; i = i + 1) {
+        if (i == ids.length -1) {
+            it.node.remove(ids[i]);
+        }
+        it.go(ids[i]);
+    }
 }
 
 // breadth first traversal

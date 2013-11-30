@@ -1,5 +1,9 @@
+<li class="topcoat-list__item item_selected" ng-class="{selected_item:data.selected}">
+{{ data.name }} {{ data.cost }}
+
+<div ng-if="data.expand">
+
 <div class="topcoat-list">
-  {{data.name }} {{cost}}
   <h1 class="topcoat-list__header" ng-click="">{{data.name}}  {{cost}}</h1>
   <ul class="topcoat-list__container">
     <div ng-repeat="data in options">
@@ -10,3 +14,6 @@
     </div>
   </ul>
 </div>
+</div>
+
+</li>

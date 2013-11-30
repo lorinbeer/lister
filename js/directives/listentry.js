@@ -36,7 +36,6 @@ Lister.directive("lsListItem", function ($compile, $http) {
         templateUrl : "partials/listentrytemplate.html",
        // repeater priority takes precedence 
        compile : function (telement, tattrs, transclude) {
-            console.log("HERE WE ARE");
 
             return function (scope, iElement, iAttrs, controller) {
                 var type;
@@ -55,18 +54,37 @@ Lister.directive("lsListItem", function ($compile, $http) {
                             //e.stopPropagation();
                             scope.data._totalcost = scope.data.cost * e.srcElement.value;
                         };
+                        iElement.bind("click", function(e) {
+                            scope.data.selected = !scope.data.selected;
+                            e.stopPropagation();
+                        });
                         iElement.append(sliderelem);
                     }
                 } else if(type=="sublist" || scope.data.options) {
                    // draw as a sublist
-                   console.log("WE ARE A SUBLIST");
                    var parent = iElement.parent();
                    console.log(iElement.remove());
-
+                
                    $http.get('partials/recursiveentry.html').success(function(data) {
-                console.log('how many times?');
+                        scope.data.expand = false;
                         scope.options = scope.data.options;
                         var elem = document.createElement('li');
+                        elem.setAttribute('ng-click', 'select(data)');
+                        elem.onclick = function(e) {
+                            if (scope.data.selected && scope.data.expand) {
+                                scope.data.expand = false;
+                            } else if (!scope.data.selected && !scope.data.expand) {
+                                scope.data.selected = true; scope.data.expand = true;
+                            } else if (scope.data.selected && !scope.data.expad) {
+                                scope.data.selected = false;
+                            } else if (!scope.data.selected) {
+                                scope.data.selected = true;
+                            }
+
+//                            scope.data.expand = scope.data.expand == 'yes' ? 'no' : 'yes';
+                            scope.$digest();
+                            e.stopPropagation();
+                        }
                         elem.innerHTML = data;
                         $compile(elem)(scope);
                         parent.append(elem);
@@ -74,6 +92,10 @@ Lister.directive("lsListItem", function ($compile, $http) {
 
 
 
+                } else {
+                    iElement[0].onclick = function(e) { 
+                    scope.data.selected = !scope.data.selected;
+                    e.stopPropagation(); }
                 }
                 iElement[0].setAttribute('ng-click', 'select(data)'); 
                 $compile(iElement)(scope); 

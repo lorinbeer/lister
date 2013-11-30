@@ -18,7 +18,8 @@
 
 function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler) {
     var entry = ListerDataService.peak(),
-        _data,
+        _rawdata,
+        _datatree,
         _tree,
         _mode;
 
@@ -39,26 +40,53 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         $scope.cost = cost; // update display
     }
 
-    var update = function(node, data) {
-        // attempt to add the node
-        data.selected = !data.selected;
-        if (node.add(data)) {
+    var update = function(targettree, datatree, data) {
+        var addr = datatree.address(data.id);
+
+        // determine data address
+        // check address in tree
+        // if present, remove
+        // if not present, add
+        console.log(targettree.checkaddress(addr)); 
+        if (targettree.checkaddress(addr)) {
+            targettree.prune(addr);
+        } else {
+            targettree.splice(datatree, data.id);
+        }
+        console.log(targettree);
+        updateCost(targettree.root);
+       // attempt to add the node
+/*        if (node.add(data)) {
             updateCost(node); // data was not in node, so just update the cost
         } else if ((i = node._indexOf(data.id ? data.id : data.name)) >= 0) {
             // data was in node, so check if an update is necsseary. This allows data to mutate between events
             node.remove(data.id ? data.id : data.name);
             updateCost(node, data);
         }
+*/
+    }
+
+    var treeify = function(root, data, i) {
+        for (each in data.options) {
+            var newnode = root.add(data.options[each]);
+            treeify(newnode, data.options[each]);
+        }
     }
 
     $http.get('data/'+entry.uri+'.json').success(function(data) {
-        var name = data.name;
-        if (!data.unique) {
+            var name = data.name;
+    /*        if (!data.unique) {
             name = name + Math.floor((Math.random()*1000)+1);
-        }
+            }
+*/
         _tree = new Tree(new Node(name,data));
-        _data = data; 
+        _rawdata = data;
         _mode = data.mode ? data.mode : 'sel';
+ 
+        _datatree = new Tree(new Node(data.name,data));
+        treeify(_datatree.root, data); 
+
+        $scope.datatree = _datatree; 
         $scope.spec = data;
         $scope.options = data.options;
         // set the base cost
@@ -69,32 +97,50 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
     });
 
     $scope.select = function(data) {
+        if (!data.cost) data.cost = 0;
         if (_mode == 'mex') {
             data.selected = false;
-            data.parent = _data.parent;
+            data.parent = _rawdata.parent;
             // throw out the previous tree
             _tree.root = new Node(data.id, data);
             // update cost with this entries cost
             _tree.root().cost = parseInt(data.cost);
         } else if (_mode == 'sel') {
-            update(_tree.root,data);
+            update(_tree,_datatree,data);
         }
+    }
+
+    var path = function(id,st,data,done) {
+        if (id == data.name || id == data.id) {
+            return [data];
+        } 
+        if  (data.options) {
+            for (i in data.options) {
+                sp = path(id,st,data.options[i]);
+                if (sp) {
+                    sp.push(data);
+                    return sp;
+                }
+            }
+        }
+        return;
     }
 
     var findparent = function(id,data) {
         var curopt = data;
         var queue = [data];
+
         while(queue) {
         if(queue[0].options) {
             for(each in queue[0].options) {
-                console.log(each, queue[0].options[each]);
                 if (queue[0].options[each].id == id || queue[0].options[each].name == id) {
-                    return curopt;
+                    return queue[0];
                 }
             }
         }
+        if (queue[0].options)
             queue = queue.concat(queue[0].options);
-            queue.shift();
+        queue.shift();
         }
     }
 
@@ -105,9 +151,9 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             toggle(subselect);
         } else {
             ListerRuler.interpret(select.rule,_node,{'selection':subselect,'entry':select});
-            _node.cost = _data.cost;
+            _node.cost = _rawdata.cost;
             for (child in _node._children) {
-                _node.cost = JSON.parse(_node.cost) + JSON.parse(_node._children[child]._data.cost);
+                _node.cost = JSON.parse(_node.cost) + JSON.parse(_node._children[child]._rawdata.cost);
             }
         }
         $scope.cost = _node.cost;
@@ -118,7 +164,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         console.log("select range", data);
         var rep = _node.find(data.name);
         if(rep) {
-            _node.cost = JSON.parse(_node.cost) - (JSON.parse(rep._data.volume) * JSON.parse(rep._data.cost));
+            _node.cost = JSON.parse(_node.cost) - (JSON.parse(rep._rawdata.volume) * JSON.parse(rep._rawdata.cost));
             _node.remove(data.name);
             console.log(_node);
         }
@@ -135,10 +181,9 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
      * add button handler
      */
     $scope.add = function() {
-        ListerDataService._tree.addChild(_node._data.parent, _node);
-        console.log(_node.cost);
-        var parent = ListerDataService._tree.search(_node._data.parent)
-        parent._data.total = JSON.parse(parent._data.total) + JSON.parse(_node.cost);
+        ListerDataService._tree.addChild(_node._rawdata.parent, _node);
+        var parent = ListerDataService._tree.search(_node._rawdata.parent)
+        parent._rawdata.total = JSON.parse(parent._rawdata.total) + JSON.parse(_node.cost);
         ListerDataService.popToLast('create');
         window.location.href = "#/list";
     }
@@ -154,7 +199,6 @@ function ListCtrl($scope, $http, $compile, ListerDataService) {
         // List Navigation descends until it hits a 'select' page
         if (entry.data.action=="nav" || !entry.data.action) {
             $http.get('data/'+entry.data.uri+'.json').success(function(data) {
-                console.log(data);
                 $scope.List = data;
                 ListerDataService.push(entry.data);
                 window.location.href = "#/mainmenu"; 
