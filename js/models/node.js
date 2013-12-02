@@ -33,6 +33,9 @@ Node.prototype.length = function () {
     return this.children.length;
 }
 
+Node.prototype.clear = function () {
+    this.children = [];
+}
 
 // returns first node with id
 Node.prototype.find = function (id) {
@@ -58,14 +61,15 @@ Node.prototype.add = function (childdata) {
             return false;
         }
     }
+    var nnode;
     if (isNode) {
-        this.children.push(childdata);
+        nnode = JSON.parse(JSON.stringify(childdata))
+        this.children.push(nnode);
     } else {
-        temp = new Node(childId, childdata);  
-        this.children.push(temp);
-        childdata = temp;
+        nnode = new Node(childId, childdata);  
+        this.children.push(nnode);
     }
-    return childdata;
+    return nnode;
 }
 
 // removes all instances of the id
