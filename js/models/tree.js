@@ -126,12 +126,14 @@ Tree.prototype.splice = function(sourcetree, id) {
     var ids = sourcetree.address(id),
         source = new TreeIterator(sourcetree),
         self = new TreeIterator(this);
-    console.log(id);
+    
     ids = ids.split('.');
      
     for (var i = 1; i  < ids.length; i = i+1) {
         source.go(ids[i]);
-        self.node.add(source.node);
+        if (self.node._indexOf(source.node.id) < 0) {
+            self.node.add(source.node).children = [];
+        }
         self.go(ids[i]); 
     }
 }
