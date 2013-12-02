@@ -40,7 +40,6 @@ Lister.directive("lsListItem", function ($compile, $http) {
             return function (scope, iElement, iAttrs, controller) {
                 var type;
 
-
                 if(type=scope.data.type) {
                     if (type=="slider") {
                         sliderelem = document.createElement('input');
@@ -56,6 +55,7 @@ Lister.directive("lsListItem", function ($compile, $http) {
                         };
                         iElement.bind("click", function(e) {
                             scope.data.selected = !scope.data.selected;
+                            scope.node.selected = !scope.node.selected;
                             e.stopPropagation();
                         });
                         iElement.append(sliderelem);
@@ -93,6 +93,7 @@ Lister.directive("lsListItem", function ($compile, $http) {
                 } else {
                     iElement[0].onclick = function(e) { 
                     scope.data.selected = !scope.data.selected;
+                    scope.node.selected = !scope.node.selected;
                     e.stopPropagation(); }
                 }
                 iElement[0].setAttribute('ng-click', 'select(data)'); 

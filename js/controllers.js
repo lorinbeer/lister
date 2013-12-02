@@ -44,14 +44,12 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 
     var update = function(targettree, datatree, data) {
         var addr = datatree.address(data.id);
-        
-        if (targettree.checkaddress(addr)) {
+         
+        if (targettree.checkaddress(addr) && !data.selected) {
             targettree.prune(addr);
         } else {
             targettree.splice(datatree, data.id);
         }
-
-
        updateCost(targettree.root);
     }
 
