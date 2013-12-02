@@ -37,45 +37,22 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             });
         }
         recdate(root);
-/*
-        node._forEachChild(function (node,child,index) {
-            // totalcost indicates preprocessing of data, rather than raw cost
-            updateCost(child);
-            console.log("returned from child update");
-            // we want the totalcost variable to only
-            console.log(node.id,node.cost,node);
-                console.log(node.cost);
-            cost = parseInt(cost) + parseInt(child.data.cost);//parseInt("_totalcost" in child.data ? child.data._totalcost : child.data.cost);
-        });
-*/
+        
         root.cost = cost; // set total cost on node
         $scope.cost = cost; // update display
     }
 
     var update = function(targettree, datatree, data) {
         var addr = datatree.address(data.id);
-        // determine data address
-        // check address in tree
-        // if present, remove
-        // if not present, add
+        
         if (targettree.checkaddress(addr)) {
             targettree.prune(addr);
         } else {
             targettree.splice(datatree, data.id);
         }
-        console.log(_tree);
 
 
        updateCost(targettree.root);
-       // attempt to add the node
-/*        if (node.add(data)) {
-            updateCost(node); // data was not in node, so just update the cost
-        } else if ((i = node._indexOf(data.id ? data.id : data.name)) >= 0) {
-            // data was in node, so check if an update is necsseary. This allows data to mutate between events
-            node.remove(data.id ? data.id : data.name);
-            updateCost(node, data);
-        }
-*/
     }
 
     var treeify = function(root, data, i) {
@@ -87,7 +64,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 
     $http.get('data/'+entry.uri+'.json').success(function(data) {
             var name = data.name;
-    /*        if (!data.unique) {
+
+/*        if (!data.unique) {
             name = name + Math.floor((Math.random()*1000)+1);
             }
 */
@@ -156,39 +134,6 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         }
     }
 
-    
-/*
-        if ( _node._indexOf(subselect.name)>=0) {
-            console.log(select, subselect);
-            toggle(subselect);
-        } else {
-            ListerRuler.interpret(select.rule,_node,{'selection':subselect,'entry':select});
-            _node.cost = _rawdata.cost;
-            for (child in _node._children) {
-                _node.cost = JSON.parse(_node.cost) + JSON.parse(_node._children[child]._rawdata.cost);
-            }
-        }
-        $scope.cost = _node.cost;
-    }
-*/
-/*
-    $scope.selectRange = function(data) {
-        console.log("select range", data);
-        var rep = _node.find(data.name);
-        if(rep) {
-            _node.cost = JSON.parse(_node.cost) - (JSON.parse(rep._rawdata.volume) * JSON.parse(rep._rawdata.cost));
-            _node.remove(data.name);
-            console.log(_node);
-        }
-        if(data.volume==0) {
-            return;
-        }
-        var node = new Node(data.name, JSON.parse(JSON.stringify(data)));
-        _node.add(node);
-        _node.cost = JSON.parse(_node.cost) + (JSON.parse(data.cost) * JSON.parse(data.volume));
-        $scope.cost = _node.cost;
-    };
-*/
     /**
      * add button handler
      */
