@@ -33,7 +33,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             node._forEachChild( function(n,c,i) {
                 // recurse on child
                 recdate(c);
-                cost = parseInt(cost) + parseInt(c.data.cost);
+                cost = parseInt(cost) + parseInt(c.data._totalcost ? c.data._totalcost : c.data.cost);
             });
         }
         recdate(root);
