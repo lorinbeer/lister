@@ -27,34 +27,46 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
      * update the cost property of a node by counting the cost of all children
      * calls update on all child nodes
     */
-    var updateCost = function (node) {
-        var cost = node.data.cost; // set base cost from the nodes data
+    var updateCost = function (root) {
+        var cost = root.data.cost; // set base cost from the nodes data
+        var recdate = function(node) {
+            node._forEachChild( function(n,c,i) {
+                // recurse on child
+                recdate(c);
+                cost = parseInt(cost) + parseInt(c.data.cost);
+            });
+        }
+        recdate(root);
+/*
         node._forEachChild(function (node,child,index) {
             // totalcost indicates preprocessing of data, rather than raw cost
             updateCost(child);
+            console.log("returned from child update");
             // we want the totalcost variable to only
-            cost = parseInt(cost) + parseInt("_totalcost" in child.data ? child.data._totalcost : child.data.cost);
+            console.log(node.id,node.cost,node);
+                console.log(node.cost);
+            cost = parseInt(cost) + parseInt(child.data.cost);//parseInt("_totalcost" in child.data ? child.data._totalcost : child.data.cost);
         });
-
-        node.cost = cost; // set total cost on node
+*/
+        root.cost = cost; // set total cost on node
         $scope.cost = cost; // update display
     }
 
     var update = function(targettree, datatree, data) {
         var addr = datatree.address(data.id);
-
         // determine data address
         // check address in tree
         // if present, remove
         // if not present, add
-        console.log(targettree.checkaddress(addr)); 
         if (targettree.checkaddress(addr)) {
             targettree.prune(addr);
         } else {
             targettree.splice(datatree, data.id);
         }
-        console.log(targettree);
-        updateCost(targettree.root);
+        console.log(_tree);
+
+
+       updateCost(targettree.root);
        // attempt to add the node
 /*        if (node.add(data)) {
             updateCost(node); // data was not in node, so just update the cost
@@ -85,8 +97,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
  
         _datatree = new Tree(new Node(data.name,data));
         treeify(_datatree.root, data); 
-
         $scope.datatree = _datatree; 
+        $scope.node = _datatree.root;
         $scope.spec = data;
         $scope.options = data.options;
         // set the base cost

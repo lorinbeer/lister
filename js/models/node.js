@@ -63,7 +63,7 @@ Node.prototype.add = function (childdata) {
     }
     var nnode;
     if (isNode) {
-        nnode = JSON.parse(JSON.stringify(childdata))
+        nnode = new Node(childdata.id, JSON.parse(JSON.stringify(childdata.data)));
         this.children.push(nnode);
     } else {
         nnode = new Node(childId, childdata);  
