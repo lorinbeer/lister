@@ -1,13 +1,12 @@
 <li class="topcoat-list__item item_selected" ng-class="{selected_item:data.selected}">
-{{ data.name }} {{ data.cost }}
-
-<div ng-if="data.expand">
+{{ node.data.name }}
+<div ng-if="node.data.expand">
 
 <div class="topcoat-list">
-  <h1 class="topcoat-list__header" ng-click="">{{data.name}}  {{cost}}</h1>
+  <h1 class="topcoat-list__header" ng-click="">{{node.date.name}}  {{cost}}</h1>
   <ul class="topcoat-list__container">
-    <div ng-repeat="data in options">
-    <ls-list-item class="topcoat-list__item" ng-class="{selected_item:data.selected}" data="data" select="select" 
+    <div ng-repeat="child in node.children">
+    <ls-list-item class="topcoat-list__item" ng-class="{selected_item:child.data.selected}" node="child" data="child.data" select="select" 
                 ng-animate="'custom'" 
     >
     </ls-list-item>
