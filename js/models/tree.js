@@ -58,7 +58,6 @@ Tree.prototype.addchild = function(targetid, child) {
         return;
     }
     var callback = function(node) {
-        console.log(node); 
        if (node.id == targetid) {
             child.parent = node;
             node.add(child);
@@ -132,7 +131,12 @@ Tree.prototype.splice = function(sourcetree, id) {
     for (var i = 1; i  < ids.length; i = i+1) {
         source.go(ids[i]);
         if (self.node._indexOf(source.node.id) < 0) {
-            self.node.add(source.node).children = [];
+            var added = self.node.add(source.node);
+            for (child in source.node.children) {
+                if (source.node.children[child].selected) {
+                    added.add(source.node.children[child]);
+                } 
+            }
         }
         self.go(ids[i]); 
     }
