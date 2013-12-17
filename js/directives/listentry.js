@@ -64,7 +64,6 @@ Lister.directive("lsListItem", function ($compile, $http) {
                    // draw as a sublist
                    var parent = iElement.parent();
                    iElement.remove();
-               console.log('aseuhsanoeuh'); 
                    $http.get('partials/recursiveentry.html').success(function(data) {
                         scope.node.expand = false;
                         scope.node.selected = false;
@@ -72,7 +71,6 @@ Lister.directive("lsListItem", function ($compile, $http) {
                         var elem = document.createElement('li');
                         elem.setAttribute('ng-click', 'select(node)');
                         elem.onclick = function(e) {
-                            console.log("ELEM ON CLICK", scope.node);
                             if (scope.node.selected && scope.node.expand) {
                                 scope.node.expand = false;
                             } else if (!scope.node.selected && !scope.node.expand) {
@@ -94,12 +92,9 @@ Lister.directive("lsListItem", function ($compile, $http) {
 
                 } else {
                     iElement[0].onclick = function(e) { 
-                    console.log("blandoesuhtaeuh");
-                    console.log(scope.node.selected);
                     if (scope.node.selected == undefined) scope.node.selected = true;
                     else
                     scope.node.selected = !scope.node.selected;
-                        console.log(scope.node.selected);
                     e.stopPropagation(); }
                 }
                 iElement[0].setAttribute('ng-click', 'select(node)'); 
