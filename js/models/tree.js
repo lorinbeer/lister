@@ -107,8 +107,8 @@ Tree.prototype.checkaddress = function(addr) {
     }
     return true;
 }
-/*
-Tree.prototype.lookup(addr) {
+
+Tree.prototype.lookup = function(addr) {
     var ids = addr.split('.'),
         currentnode = this.root;
     for (var i = 0; i < ids.length; i = i+1) {
@@ -119,8 +119,9 @@ Tree.prototype.lookup(addr) {
             }
         }
     }   
+    return currentnode;
 }
-*/
+
 Tree.prototype.splice = function(sourcetree, id) {
     var ids = sourcetree.address(id),
         source = new TreeIterator(sourcetree),
@@ -132,9 +133,11 @@ Tree.prototype.splice = function(sourcetree, id) {
         source.go(ids[i]);
         if (self.node._indexOf(source.node.id) < 0) {
             var added = self.node.add(source.node);
+            added.parent = self.node;
             for (child in source.node.children) {
                 if (source.node.children[child].selected) {
                     added.add(source.node.children[child]);
+                    source.node.children[child].parent = added;
                 } 
             }
         }

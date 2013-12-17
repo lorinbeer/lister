@@ -54,7 +54,7 @@ Lister.directive("lsListItem", function ($compile, $http) {
                             scope.data._totalcost = scope.data.cost * e.srcElement.value;
                         };
                         iElement.bind("click", function(e) {
-                            scope.data.selected = !scope.data.selected;
+//                            scope.data.selected = !scope.data.selected;
                             scope.node.selected = !scope.node.selected;
                             e.stopPropagation();
                         });
@@ -64,21 +64,23 @@ Lister.directive("lsListItem", function ($compile, $http) {
                    // draw as a sublist
                    var parent = iElement.parent();
                    iElement.remove();
-                
+               console.log('aseuhsanoeuh'); 
                    $http.get('partials/recursiveentry.html').success(function(data) {
-                        scope.node.data.expand = false;
-                        
+                        scope.node.expand = false;
+                        scope.node.selected = false;
+ 
                         var elem = document.createElement('li');
-                        elem.setAttribute('ng-click', 'select(data)');
+                        elem.setAttribute('ng-click', 'select(node)');
                         elem.onclick = function(e) {
-                            if (scope.data.selected && scope.data.expand) {
-                                scope.data.expand = false;
-                            } else if (!scope.data.selected && !scope.data.expand) {
-                                scope.data.selected = true; scope.data.expand = true;
-                            } else if (scope.data.selected && !scope.data.expad) {
-                                scope.data.selected = false;
-                            } else if (!scope.data.selected) {
-                                scope.data.selected = true;
+                            console.log("ELEM ON CLICK", scope.node);
+                            if (scope.node.selected && scope.node.expand) {
+                                scope.node.expand = false;
+                            } else if (!scope.node.selected && !scope.node.expand) {
+                                scope.node.selected = true; scope.node.expand = true;
+                            } else if (scope.node.selected && !scope.node.expand) {
+                                scope.node.selected = false;
+                            } else if (!scope.node.selected) {
+                                scope.node.selected = true;
                             }
                             scope.$digest();
                             e.stopPropagation();
@@ -92,11 +94,15 @@ Lister.directive("lsListItem", function ($compile, $http) {
 
                 } else {
                     iElement[0].onclick = function(e) { 
-                    scope.data.selected = !scope.data.selected;
+                    console.log("blandoesuhtaeuh");
+                    console.log(scope.node.selected);
+                    if (scope.node.selected == undefined) scope.node.selected = true;
+                    else
                     scope.node.selected = !scope.node.selected;
+                        console.log(scope.node.selected);
                     e.stopPropagation(); }
                 }
-                iElement[0].setAttribute('ng-click', 'select(data)'); 
+                iElement[0].setAttribute('ng-click', 'select(node)'); 
                 $compile(iElement)(scope); 
             };
         }

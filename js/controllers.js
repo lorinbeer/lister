@@ -20,8 +20,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
     var entry = ListerDataService.peak(),
         _rawdata,
         _datatree,
-        _tree,
-        _mode;
+        _tree;
 
     /**
      * update the cost property of a node by counting the cost of all children
@@ -56,6 +55,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
     var treeify = function(root, data, i) {
         for (each in data.options) {
             var newnode = root.add(data.options[each]);
+            newnode.parent = root;
             treeify(newnode, data.options[each]);
         }
     }
@@ -69,7 +69,6 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 */
         _tree = new Tree(new Node(name,data));
         _rawdata = data;
-        _mode = data.mode ? data.mode : 'sel';
  
         _datatree = new Tree(new Node(data.name,data));
         treeify(_datatree.root, data); 
@@ -84,36 +83,30 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         $scope.cost = cost;
     });
 
-    $scope.select = function(data) {
-        if (!data.cost) data.cost = 0;
-        if (_mode == 'mex') {
-            data.selected = false;
-            data.parent = _rawdata.parent;
-            // throw out the previous tree
-            _tree.root = new Node(data.id, data);
-            // update cost with this entries cost
-            _tree.root().cost = parseInt(data.cost);
-        } else if (_mode == 'sel') {
-            update(_tree,_datatree,data);
-        }
-    }
-
-    var path = function(id,st,data,done) {
-        if (id == data.name || id == data.id) {
-            return [data];
-        } 
-        if  (data.options) {
-            for (i in data.options) {
-                sp = path(id,st,data.options[i]);
-                if (sp) {
-                    sp.push(data);
-                    return sp;
+    $scope.select = function(node) {
+        if (!node.cost) node.cost = 0;
+        if (node.parent) {
+            if (node.parent.data.rule) {
+                if (node.parent.data.rule.name == 'mex') {
+                    ListerRuler.apply( { 'rule': node.parent.data.rule, 
+                                         'node': node,
+                                         'targettree' : _tree, 
+                                         'datatree' : _datatree} );
+                    /* 
+                    node.selected = false;
+                    node.parent = _rawdata.parent;
+                    // throw out the previous tree
+                    _tree.root = new Node(node.id, node);
+                    // update cost with this entries cost
+                    _tree.root().cost = parseInt(node.cost);
+                    */
                 }
             }
+        } else {
+            update(_tree,_datatree,node);
         }
-        return;
     }
-
+   /* 
     var findparent = function(id,data) {
         var curopt = data;
         var queue = [data];
@@ -131,7 +124,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         queue.shift();
         }
     }
-
+*/
     /**
      * add button handler
      */

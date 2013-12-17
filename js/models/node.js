@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var Node = function (id, data, children) {
+function Node(id, data, children) {
     this._type = 'node';
     this.id = id;
     this.data = data;
@@ -107,6 +107,12 @@ Node.prototype.toJSON = function() {
         jsondata['children'].push(c.toJSON());
     });     
     return JSON.stringify(jsondata); 
+}
+
+Node.prototype.foreachchild = function (cb) {
+    for (var i = 0; i < this.children.length; i = i + 1) {
+        cb(this, this.children[i], i);
+    }
 }
 
 // pass callback function Node,Child,Index

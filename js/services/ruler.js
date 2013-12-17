@@ -21,14 +21,41 @@ Lister.factory('ListerRuler', function () {
     // Handlers interpret rules pre selection
     // They can enforce intelligent behaviour, such as toggling mutually exclusive selections
 
-    // mutually exlcusive selection
-    var mexHandler = function(rule, tree, context) {
-        for (opt in context.entry.options) {
-            tree.remove(context.entry.options[opt].name);
-        }
-        tree.add(context.selection);
-        return true; 
+
+    /**
+     * mutually exclusive selection handler
+     * apply a mutually exclusive selection of node and tree
+     *
+     */
+    var mexHandler = function(ctx) {
+        var addr = ctx.datatree.address(ctx.node.id);
+
+        // if node is already selected 
+
+        // make sure node is part of the data tree        
+        ctx.datatree.lookup(addr);
+
+        // is 
+
+        // de-select any sibling nodes
+        var paddr = addr.split('.');
+        paddr.pop();
+        paddr = paddr.join('.');
+        
+        var parent = ctx.datatree.lookup(paddr);
+ 
+        parent.foreachchild(function (node, child, i) {
+            if (child.id == ctx.node.id) {
+            } else {
+            //    ctx.node.selected = false;
+            }
+        });
+
+
     };
+
+
+
     // minimum value selection
     var minHandler = function(rule, tree, context) {
         var count = 0;
@@ -98,10 +125,16 @@ Lister.factory('ListerRuler', function () {
                    'addTo' : {'handler': trackHandler}
                   },
 
-        //
-        interpret : function(rule, tree, context) {
-            console.log(rule);
-            return rulerService.rulemap[rule.name].handler(rule, tree, context);
+        /**
+         * apply a rule given a context of a node and tree
+         * the results of applying the rule depends on the implementation of the rule handler 
+         * 
+         * rule - the rule to apply to node and tree
+         * node -
+         * tree - 
+         */
+        apply : function(ctx) {
+            return rulerService.rulemap[ctx.rule.name].handler(ctx);
         },
 
         // 
