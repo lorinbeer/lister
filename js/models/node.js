@@ -64,6 +64,8 @@ Node.prototype.add = function (childdata) {
     var nnode;
     if (isNode) {
         nnode = new Node(childdata.id, JSON.parse(JSON.stringify(childdata.data)));
+        /*todo*/
+        nnode.cost = childdata.cost;
         this.children.push(nnode);
     } else {
         nnode = new Node(childId, childdata);  

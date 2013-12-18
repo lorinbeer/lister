@@ -122,6 +122,7 @@ Tree.prototype.lookup = function(addr) {
     return currentnode;
 }
 
+//
 Tree.prototype.splice = function(sourcetree, id) {
     var ids = sourcetree.address(id),
         source = new TreeIterator(sourcetree),
