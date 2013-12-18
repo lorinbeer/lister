@@ -18,42 +18,47 @@
 
 Lister.factory('ListerRuler', function () {
     
-    // Handlers interpret rules pre selection
-    // They can enforce intelligent behaviour, such as toggling mutually exclusive selections
-
+    /** Handlers interpret rules pre selection
+     *  They can enforce intelligent behaviour, such as toggling mutually exclusive selections
+     */
 
     /**
      * mutually exclusive selection handler
      * apply a mutually exclusive selection of node and tree
-     *
+     * ctx - context, with expected members
+     *      datatree - tree the selection is from
+     *      targettree - tree the selection is to be grafted on to
+     *      node - node that was selected in datatree
      */
     var mexHandler = function(ctx) {
         var addr = ctx.datatree.address(ctx.node.id);
 
-        // if node is already selected 
-
         // make sure node is part of the data tree        
-        ctx.datatree.lookup(addr);
+        if (!ctx.datatree.lookup(addr)) { return false };
 
-        // is 
-
-        // de-select any sibling nodes
+        // parent node address lookup
         var paddr = addr.split('.');
         paddr.pop();
         paddr = paddr.join('.');
-        
         var parent = ctx.datatree.lookup(paddr);
- 
+
+
+        // remove and deselect any sibling nodes 
         parent.foreachchild(function (node, child, i) {
             if (child.id == ctx.node.id) {
+                if (taddr=ctx.targettree.address(ctx.node.id)) {
+                    ctx.targettree.prune(taddr);
+                    child.selected = false;
+                } else {
+                    ctx.targettree.addchild(parent.id, child);
+                    child.selected = true;
+                }
             } else {
-            //    ctx.node.selected = false;
+                child.selected = false;
+                ctx.targettree.prune(ctx.targettree.address(child.id));
             }
         });
-
-
     };
-
 
 
     // minimum value selection
@@ -89,7 +94,6 @@ Lister.factory('ListerRuler', function () {
 
     // track handler
     var trackHandler = function(rule, tree, context) {
-        console.log(rule);
         if (rule.action == 'add') {
         }
     }

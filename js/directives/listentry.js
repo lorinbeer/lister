@@ -51,7 +51,7 @@ Lister.directive("lsListItem", function ($compile, $http) {
                         scope.data._totalcost = scope.data.cost * 0;
                         sliderelem.onchange =  function(e) {
                             //e.stopPropagation();
-                            scope.data._totalcost = scope.data.cost * e.srcElement.value;
+                            scope.node.totalcost = scope.data.cost * e.srcElement.value;
                         };
                         iElement.bind("click", function(e) {
 //                            scope.data.selected = !scope.data.selected;
@@ -91,14 +91,18 @@ Lister.directive("lsListItem", function ($compile, $http) {
 
 
                 } else {
-                    iElement[0].onclick = function(e) { 
-                    if (scope.node.selected == undefined) scope.node.selected = true;
-                    else
-                    scope.node.selected = !scope.node.selected;
-                    e.stopPropagation(); }
-                }
+                    iElement[0].onclick = function(e) {
+                        if (scope.node.selected == undefined) {
+                            scope.node.selected = true;
+                        } else {
+                            scope.node.selected = !scope.node.selected;
+                        }
+                        e.stopPropagation(); 
+                    }
+                
                 iElement[0].setAttribute('ng-click', 'select(node)'); 
                 $compile(iElement)(scope); 
+            }
             };
         }
     }

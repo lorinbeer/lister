@@ -32,7 +32,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             node._forEachChild( function(n,c,i) {
                 // recurse on child
                 recdate(c);
-                cost = parseInt(cost) + parseInt(c.data._totalcost ? c.data._totalcost : c.data.cost);
+                console.log("NODE IN RECURSION:", c);
+                cost = parseInt(cost) + parseInt(c.totalcost ? c.totalcost : c.cost);
             });
         }
         recdate(root);
@@ -41,15 +42,19 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         $scope.cost = cost; // update display
     }
 
-    var update = function(targettree, datatree, data) {
-        var addr = datatree.address(data.id);
+    var update = function(targettree, datatree, node) {
+        console.log(targettree);
+        var addr = datatree.address(node.id);
          
-        if (targettree.checkaddress(addr) && !data.selected) {
+        if (targettree.checkaddress(addr) && !node.selected) {
             targettree.prune(addr);
         } else {
-            targettree.splice(datatree, data.id);
+            targettree.splice(datatree, node.id);
         }
        updateCost(targettree.root);
+       
+
+        console.log(targettree);
     }
 
     var treeify = function(root, data, i) {
@@ -84,7 +89,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
     });
 
     $scope.select = function(node) {
-        if (!node.cost) node.cost = 0;
+        if (!node.cost) node.cost = node.data.cost ? node.data.cost : 0;
         if (node.parent) {
             if (node.parent.data.rule) {
                 if (node.parent.data.rule.name == 'mex') {
@@ -92,19 +97,12 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
                                          'node': node,
                                          'targettree' : _tree, 
                                          'datatree' : _datatree} );
-                    /* 
-                    node.selected = false;
-                    node.parent = _rawdata.parent;
-                    // throw out the previous tree
-                    _tree.root = new Node(node.id, node);
-                    // update cost with this entries cost
-                    _tree.root().cost = parseInt(node.cost);
-                    */
+                    updateCost(_tree.root);
                 }
-            }
+            } else { update(_tree,_datatree,node);}
+        // TODO move update to ruler
         } else {
-            update(_tree,_datatree,node);
-        }
+        update(_tree,_datatree,node); }
     }
    /* 
     var findparent = function(id,data) {
