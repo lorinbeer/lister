@@ -42,7 +42,6 @@ Lister.factory('ListerRuler', function () {
         paddr = paddr.join('.');
         var parent = ctx.datatree.lookup(paddr);
 
-
         // remove and deselect any sibling nodes 
         parent.foreachchild(function (node, child, i) {
             if (child.id == ctx.node.id) {
@@ -60,7 +59,6 @@ Lister.factory('ListerRuler', function () {
         });
     };
 
-
     // minimum value selection
     var minHandler = function(rule, tree, context) {
         var count = 0;
@@ -74,17 +72,50 @@ Lister.factory('ListerRuler', function () {
         }
         return true;
     };
-    // max value handler 
-    var maxHandler = function(rule, tree, context) {
-        var count = 0;
-        for (opt in context.entry.options) {
-            if (tree._indexOf(context.entry.options[opt].name) >= 0) {
-                count = count + 1;
+
+    /**
+     * max selection handler
+     * apply a selection under a max rule
+     * ctx - context, with expected members
+     *      datatree - tree the selection is from
+     *      targettree - tree the selection is to be grafted on to
+     *      node - node that was selected in datatree
+     */
+    var maxHandler = function(ctx) {
+        var addr = ctx.datatree.address(ctx.node.id);
+        // make sure node is part of the data tree        
+        if (!ctx.datatree.lookup(addr)) { return false };
+
+        // parent node address lookup
+        var paddr = addr.split('.');
+        paddr.pop();
+        paddr = paddr.join('.');
+        var parent = ctx.datatree.lookup(paddr);
+        if (ctx.targettree.checkaddress(addr)) {
+            ctx.node.selected = false;
+            ctx.targettree.prune(addr); 
+        } else {
+            if (ctx.targettree.lookup(paddr).children.length < parseInt(ctx.rule.value)) {
+                ctx.node.selected = true;
+                ctx.targettree.addchild(parent.id, ctx.node); 
+            } else {
+                ctx.node.selected = false;
+//                ctx.node.selected = true;
+//                ctx.targettree.addchild(parent.id, ctx.node);
             }
         }
-        if (count <= rule.value) {
-            tree.add(context.selection);
-        }        
+        
+/*
+if (parent.children.length < ctx.rule.value) {
+            if (ctx.targettree.lookup(addr)) {
+                ctx.node.selected = false;
+                ctx.targettree.prune(addr); 
+            } else {
+                ctx.node.selected = true;
+                ctx.targettree.addchild(parent.id, ctx.node);
+            }
+        }
+*/
     };
 
     // autoselect handler

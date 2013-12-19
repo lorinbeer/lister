@@ -32,7 +32,6 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             node._forEachChild( function(n,c,i) {
                 // recurse on child
                 recdate(c);
-                console.log("NODE IN RECURSION:", c);
                 cost = parseInt(cost) + parseInt(c.totalcost ? c.totalcost : c.cost);
             });
         }
@@ -43,7 +42,6 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
     }
 
     var update = function(targettree, datatree, node) {
-        console.log(targettree);
         var addr = datatree.address(node.id);
          
         if (targettree.checkaddress(addr) && !node.selected) {
@@ -52,9 +50,6 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
             targettree.splice(datatree, node.id);
         }
        updateCost(targettree.root);
-       
-
-        console.log(targettree);
     }
 
     var treeify = function(root, data, i) {
@@ -92,13 +87,11 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
         if (!node.cost) node.cost = node.data.cost ? node.data.cost : 0;
         if (node.parent) {
             if (node.parent.data.rule) {
-                if (node.parent.data.rule.name == 'mex') {
-                    ListerRuler.apply( { 'rule': node.parent.data.rule, 
-                                         'node': node,
-                                         'targettree' : _tree, 
-                                         'datatree' : _datatree} );
-                    updateCost(_tree.root);
-                }
+                ListerRuler.apply( { 'rule': node.parent.data.rule, 
+                                     'node': node,
+                                     'targettree' : _tree, 
+                                     'datatree' : _datatree} );
+                updateCost(_tree.root);
             } else { update(_tree,_datatree,node);}
         // TODO move update to ruler
         } else {
