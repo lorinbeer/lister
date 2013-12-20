@@ -55,7 +55,7 @@ Lister.directive("lsListItem", function ($compile, $http) {
                         };
                         iElement.bind("click", function(e) {
 //                            scope.data.selected = !scope.data.selected;
-                            scope.node.selected = !scope.node.selected;
+                       //     scope.node.selected = !scope.node.selected;
                             e.stopPropagation();
                         });
                         iElement.append(sliderelem);
@@ -67,7 +67,6 @@ Lister.directive("lsListItem", function ($compile, $http) {
                    $http.get('partials/recursiveentry.html').success(function(data) {
                         scope.node.expand = false;
                         scope.node.selected = false;
- 
                         var elem = document.createElement('li');
                         elem.setAttribute('ng-click', 'select(node)');
                         elem.onclick = function(e) {
@@ -92,12 +91,15 @@ Lister.directive("lsListItem", function ($compile, $http) {
 
                 } else {
                     iElement[0].onclick = function(e) {
+/*
                         if (scope.node.selected == undefined) {
                             scope.node.selected = true;
                         } else {
                             scope.node.selected = !scope.node.selected;
                         }
+*/
                         e.stopPropagation(); 
+
                     }
                 
                 iElement[0].setAttribute('ng-click', 'select(node)'); 

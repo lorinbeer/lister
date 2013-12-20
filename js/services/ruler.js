@@ -100,22 +100,13 @@ Lister.factory('ListerRuler', function () {
                 ctx.targettree.addchild(parent.id, ctx.node); 
             } else {
                 ctx.node.selected = false;
-//                ctx.node.selected = true;
-//                ctx.targettree.addchild(parent.id, ctx.node);
-            }
-        }
-        
-/*
-if (parent.children.length < ctx.rule.value) {
-            if (ctx.targettree.lookup(addr)) {
-                ctx.node.selected = false;
-                ctx.targettree.prune(addr); 
-            } else {
+                /*
                 ctx.node.selected = true;
+                ctx.targettree.lookup(paddr).children.shift().selected = false;
                 ctx.targettree.addchild(parent.id, ctx.node);
+                */
             }
         }
-*/
     };
 
     // autoselect handler
@@ -157,6 +148,7 @@ if (parent.children.length < ctx.rule.value) {
         rulemap : {'mex' : {'handler': mexHandler, 'validator': mexValidator},
                    'min' : {'handler': minHandler, 'validator': minEntryValidator},
                    'max' : {'handler': maxHandler, 'validator': maxEntryValidator},
+                   'require' : {'handler': function(){}, 'validator': function(){}},
                    'addTo' : {'handler': trackHandler}
                   },
 
@@ -169,7 +161,18 @@ if (parent.children.length < ctx.rule.value) {
          * tree - 
          */
         apply : function(ctx) {
-            return rulerService.rulemap[ctx.rule.name].handler(ctx);
+            if (ctx.rule instanceof Array) {
+                for(i in ctx.rule) {
+                    try {
+                        console.log("trying");
+                        rulerService.rulemap[ctx.rule[i].name].handler(ctx);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            } else {
+                return rulerService.rulemap[ctx.rule.name].handler(ctx);
+            }
         },
 
         // 
