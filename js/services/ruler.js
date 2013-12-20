@@ -162,10 +162,11 @@ Lister.factory('ListerRuler', function () {
          */
         apply : function(ctx) {
             if (ctx.rule instanceof Array) {
-                for(i in ctx.rule) {
+                var rules = ctx.rule;
+                for(i in rules) {
                     try {
-                        console.log("trying");
-                        rulerService.rulemap[ctx.rule[i].name].handler(ctx);
+                        ctx.rule = rules[i];
+                        rulerService.rulemap[rules[i].name].handler(ctx);
                     } catch (e) {
                         console.log(e);
                     }
