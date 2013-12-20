@@ -53,12 +53,10 @@ Lister.directive("lsListItem", function ($compile, $http) {
                             //e.stopPropagation();
                             scope.node.totalcost = scope.data.cost * e.srcElement.value;
                         };
-                        iElement.bind("click", function(e) {
-//                            scope.data.selected = !scope.data.selected;
-                       //     scope.node.selected = !scope.node.selected;
-                            e.stopPropagation();
-                        });
+                        
+                        iElement[0].setAttribute('ng-click', 'select(node)');
                         iElement.append(sliderelem);
+                        $compile(iElement)(scope);
                     }
                 } else if(type=="sublist" || scope.data.options) {
                    // draw as a sublist
