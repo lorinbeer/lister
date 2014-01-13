@@ -43,7 +43,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 
     var update = function(targettree, datatree, node) {
         var addr = datatree.address(node.id);
-         
+        
         if (targettree.checkaddress(addr) && !node.selected) {
             targettree.prune(addr);
         } else {
@@ -85,6 +85,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
 
     $scope.select = function(node) {
         if (!node.cost) node.cost = node.data.cost ? node.data.cost : 0;
+
         if (node.parent) {
             if (node.parent.data.rule) {
                 ListerRuler.apply( { 'rule': node.parent.data.rule, 
@@ -92,59 +93,28 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerRuler)
                                      'targettree' : _tree, 
                                      'datatree' : _datatree} );
                 updateCost(_tree.root);
-            } else { update(_tree,_datatree,node);}
+            } else { 
+                update(_tree,_datatree,node);}
         // TODO move update to ruler
         } else {
-        update(_tree,_datatree,node); }
+        update(_tree,_datatree,node); } 
     }
-   /* 
-    var findparent = function(id,data) {
-        var curopt = data;
-        var queue = [data];
-
-        while(queue) {
-        if(queue[0].options) {
-            for(each in queue[0].options) {
-                if (queue[0].options[each].id == id || queue[0].options[each].name == id) {
-                    return queue[0];
-                }
-            }
-        }
-        if (queue[0].options)
-            queue = queue.concat(queue[0].options);
-        queue.shift();
-        }
-    }
-*/
+    
     /**
      * add button handler
      */
     $scope.add = function() {
-        ListerDataService._tree.addChild(_node._rawdata.parent, _node);
-        var parent = ListerDataService._tree.search(_node._rawdata.parent)
-        parent._rawdata.total = JSON.parse(parent._rawdata.total) + JSON.parse(_node.cost);
-        ListerDataService.popToLast('create');
-        window.location.href = "#/list";
+        console.log(); 
+//        ListerDataService._tree.addChild(_node._rawdata.parent, _node);
+//        var parent = ListerDataService._tree.search(_node._rawdata.parent)
+//        parent._rawdata.total = JSON.parse(parent._rawdata.total) + JSON.parse(_node.cost);
+//        ListerDataService.popToLast('create');
+//        window.location.href = "#/list";
     }
-}
-
-/**
- *
- */
-function ListCtrl($scope, $http, $compile, ListerDataService) {
-    $scope.tree = ListerDataService._tree;    
-
-    $scope.nav = function(entry) {
-        // List Navigation descends until it hits a 'select' page
-        if (entry.data.action=="nav" || !entry.data.action) {
-            $http.get('data/'+entry.data.uri+'.json').success(function(data) {
-                $scope.List = data;
-                ListerDataService.push(entry.data);
-                window.location.href = "#/mainmenu"; 
-            });
-        } else if (entry.action == "select") {
-            ListerDataService.push(entry);
-            window.location.href = "#/selection/";
-        }
+    /**
+     * cancel button handler
+     */
+    $scope.cancel = function() {
+        
     }
 }

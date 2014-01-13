@@ -22,7 +22,6 @@ var Lister =
             $routeProvider.
                 when('/index', {templateUrl: 'partials/menu.html', controller: MenuCtrl }).
                 when('/selection', {templateUrl: 'partials/selection.html', controller: SelectionCtrl}).
-                when('/list', {templateUrl: 'partials/list.html', controller: ListCtrl}).
                 otherwise({redirectTo: '/index'});
         }]);
 

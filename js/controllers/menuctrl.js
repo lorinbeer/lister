@@ -19,7 +19,7 @@
 /**
  *
  */
-function MenuCtrl($scope, $http, ListerDataService) {
+function MenuCtrl($scope, $http, ListerNavService, ListerDataService) {
     var entry = ListerDataService.peak();
 
     if (entry) {
