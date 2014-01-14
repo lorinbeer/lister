@@ -21,7 +21,6 @@
  */
 function MenuCtrl($scope, $http, ListerNavService, ListerDataService) {
     var entry = ListerDataService.peak();
-
     if (entry) {
         $http.get('data/'+entry.uri+'.json').success(function(data) {
             $scope.MenuEntries = data;
@@ -36,28 +35,33 @@ function MenuCtrl($scope, $http, ListerNavService, ListerDataService) {
             });
     }
 
+    /**
+     * on nav event
+     */
     $scope.nav = function(entry) {
+        ListerNavService.nav(entry.uri);
+        
+/*
         $http.get('data/'+entry.uri+'.json').success(function(data) {
-                if (data.type=="nav" || !data.type) {
-                    data["ret"] = { "name" : "Back" };
-                    ListerDataService.push(entry);
-                    $scope.MenuEntries = data;
-                } else if (data.type=="select") {
-                    ListerDataService.push(entry);
-                    window.location.href = "#/selection/";
-                }
-            });
-        if (entry.action=="nav" || !entry.action) {
-            $http.get('data/'+entry.uri+'.json').success(function(data) {
+            if (data.type=="nav" || !data.type) {
                 data["ret"] = { "name" : "Back" };
+                ListerDataService.push(entry);
+                $scope.MenuEntries = data;
+            } else if (data.type=="select") {
+                ListerDataService.push(entry);
+                window.location.href = "#/selection/";
+            }
+        });
+
+        if (entry.action=="nav" || !entry.action) {
+            console.log("shoeaush");
+            $http.get('data/'+entry.uri+'.json').success(function(data) {
                 $scope.MenuEntries = data;
             });
         } else if (entry.action=="select") {
             ListerDataService.push(entry);
             window.location.href = "#/selection/";
-        } else if (entry.action=="create") {
-            ListerDataService.create(entry);
-            window.location.href = "#/list";
         }
+*/
     }
 }
