@@ -23,30 +23,37 @@ Lister.factory('ListerNavService', function ($http, ListerDataService) {
     var history = [];
     var currentdata = null;
     var navServiceObject = {
-        'nav' : function (uri) {
-            $http.get('data/' + uri + '.json').success(function(data) {
+        'nav' : function (entry) {
+            $http.get('data/' + entry.uri + '.json').success(function(data) {
+                var controller = 'menu',
+                    uri;
+
+                // determine controller
+                if (entry.action == 'create') {
+                    // create mode
+//                   controller = 'selection';
+                }
+                
+                if (data.options) {
+                    controller = 'selection';
+                }
+
+                // format uri to angular friendly (no routing wild cards, ffffffuuuuuuuuuuuuu)
+                uri = entry.uri.split('/');
+                uri = uri.join('.');
+                // update state
                 history.push(uri);
                 currentdata = data;
-                window.location.href = "#/data/" + uri;
-                /*
-                    if (entry.action=="nav" || !entry.action) {
-                    $http.get('data/'+entry.uri+'.json').success(function(data) {
-                    data["ret"] = { "name" : "Back" };
-                    $scope.MenuEntries = data;
-                    });
-                    } else if (entry.action=="select") {
-                    ListerDataService.push(entry);
-                    window.location.href = "#/selection/";
-                    } else if (entry.action=="create") {
-                    ListerDataService.create(entry);
-                    window.location.href = "#/list";
-                }
-*/
+                window.location.href = '#/' + controller  +'/' + uri;
+            }).
+            error(function(data, status, headers, config) {
+                console.log(data, status, headers, config);
             });
+
         },
-        'current' : function (uri) {
+        'current' : function () {
             // return the most current entry in the history
-            return history[history.length - 1];
+            return currentdata;
         }         
     };
     return navServiceObject

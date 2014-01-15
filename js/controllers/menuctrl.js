@@ -20,12 +20,20 @@
  *
  */
 function MenuCtrl($scope, $http, ListerNavService, ListerDataService) {
-    var entry = ListerDataService.peak();
-    if (entry) {
-        $http.get('data/'+entry.uri+'.json').success(function(data) {
-            $scope.MenuEntries = data;
-        });
+    if (!ListerNavService.current()) {
+        ListerNavService.nav({'uri':'index'});
+    }
+
+    var data = ListerNavService.current();
+    
+    // if data still isn't valid, then we have no index or default page to load, and we should error out gracefully
+    if (data) {
+        $scope.MenuEntries = data;
     } else {
+
+    }
+    /*
+    else {
         $http.get('data/index.json').
             success(function(data) {
                 $scope.MenuEntries = data;
@@ -33,13 +41,13 @@ function MenuCtrl($scope, $http, ListerNavService, ListerDataService) {
             error(function(data, status, headers, config) {
                 console.log(data, status, headers, config);
             });
-    }
+    }*/
 
     /**
      * on nav event
      */
     $scope.nav = function(entry) {
-        ListerNavService.nav(entry.uri);
+        ListerNavService.nav(entry);
         
 /*
         $http.get('data/'+entry.uri+'.json').success(function(data) {

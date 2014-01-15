@@ -21,8 +21,8 @@ var Lister =
         config(['$routeProvider', function($routeProvider) {
             $routeProvider.
                 when('/index', {templateUrl: 'partials/menu.html', controller: MenuCtrl }).
-                when('/selection', {templateUrl: 'partials/selection.html', controller: SelectionCtrl}).
-                when('/data/:uri/:page', {templateUrl: 'partials/selection.html', controller: SelectionCtrl}). 
+                when('/menu/:uri/', {templateUrl: 'partials/menu.html', controller: MenuCtrl }).
+                when('/selection/:uri/', {templateUrl: 'partials/selection.html', controller: SelectionCtrl}).
                 otherwise({redirectTo: '/index'});
         }]);
 
