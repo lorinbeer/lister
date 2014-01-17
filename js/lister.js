@@ -28,15 +28,24 @@ var Lister =
 
 Lister.factory('ListerDataService', function ($http) {
     var dataServiceObj = {
-        _dat : [],
-        _list: new List(),
-        _tree: new Tree(),
+        _lists : [],
+        _currentlist : null,
 
         update : function() {
            
         },
 
         create : function(entry) {
+            dataServiceObj._currentlist = new Tree();
+            // set the root source (via url)
+            
+
+
+            dataServiceObj._lists.push(dataServiceObj._currentlist);
+           
+            console.log(window.location.href);
+            
+/*
             // retrieve the template to create from
             $http.get('data/'+entry.uri+'.json').success(function(data) {
                 // add the id to each data object
@@ -49,6 +58,8 @@ Lister.factory('ListerDataService', function ($http) {
                 dataServiceObj._tree = new Tree();
                 dataServiceObj._tree.root.fromObj(data);
             });
+*/
+
         },
 
         getLast : function(action) {
@@ -67,26 +78,21 @@ Lister.factory('ListerDataService', function ($http) {
                 dataServiceObj._dat.pop();
             }
         },
-        
-        push : function(obj) {
-           return dataServiceObj._dat.push(obj);
-        },
 
-        pop : function() {
-            return dataServiceObj._dat.pop();
-        },
+        // add the selection tree at the given address
+        add : function(address, tree) {
+            
+            dataServiceObj._currentlist.add(address, tree.root);
 
-        peak : function () {
-            return dataServiceObj._dat[dataServiceObj._dat.length-1];
-        },
+            console.log(dataServiceObj._currentlist);
 
-        clear : function() {
-            dataServiceObj._dat = [];
-        },
+            // find the selection id in the source tree, and its address
+            // follow the address down in the selection tree, creating when necessary
+            // check that we rules are met
+            // add the selection with a unique id at the end of the selection
+            
 
-        add : function(selection) {
-            // add selection to sublist based on type
-            if (selection.type) {
+         /*   if (selection.type) {
                 for (each in dataServiceObj._list._options) {
                     if (dataServiceObj._list._options[each]._id == selection.type) {
                         dataServiceObj._list._options[each].add(selection);    
@@ -95,6 +101,7 @@ Lister.factory('ListerDataService', function ($http) {
             } else {
                 dataServiceObj._list.add(selection);
             }
+*/
         }
 
     };

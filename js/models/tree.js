@@ -73,6 +73,23 @@ Tree.prototype.addchild = function(targetid, child) {
     this._bft(callback);        
 }
 
+// add the tree rooted at node to this tree with path address
+Tree.prototype.add = function(address, node) {
+    var path = address.split('.'),
+        self = new TreeIterator(this);
+    
+    for (var i = 1; i  < path.length; i = i+1) {
+        // check for the address component
+        if (self.node._indexOf(path[i]) < 0) {
+            // add a node with this id if one does not exist
+            var added = self.node.add({'id':path[i]})
+            added.parent = self.node;
+        }
+        self.go(path[i]); 
+    }    
+    self.node.add(node);
+}
+
 //returns delimited string of the ids in this nodes ancestry to the root node
 Tree.prototype.address = function(id) {
     var chain = [],
@@ -122,7 +139,7 @@ Tree.prototype.lookup = function(addr) {
     return currentnode;
 }
 
-//
+// splice: adds the entire branch leading to node with 'id' from sourcetree on to this tree
 Tree.prototype.splice = function(sourcetree, id) {
     var ids = sourcetree.address(id),
         source = new TreeIterator(sourcetree),

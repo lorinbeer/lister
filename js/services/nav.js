@@ -31,7 +31,7 @@ Lister.factory('ListerNavService', function ($http, ListerDataService) {
                 // determine controller
                 if (entry.action == 'create') {
                     // create mode
-//                   controller = 'selection';
+                    ListerDataService.create();
                 }
                 
                 if (data.options) {
@@ -51,10 +51,27 @@ Lister.factory('ListerNavService', function ($http, ListerDataService) {
             });
 
         },
+
         'current' : function () {
             // return the most current entry in the history
             return currentdata;
-        }         
+        },
+
+        // retrieve the uri from the address bar
+        'getCurrentUri' : function () {
+            var addr = window.location.href,
+                uri = '';
+            addr = addr.split('/');
+            // return the first non-empty string after the split, expected is 2 iterations
+            while (addr.length > 0) {
+                uri = addr.pop();
+                if (uri != '') {
+                    break;
+                }
+            }
+            return uri;
+        }
+          
     };
     return navServiceObject
 });

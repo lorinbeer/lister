@@ -17,8 +17,7 @@
  */
 
 function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavService, ListerRuler) {
-    var entry = ListerDataService.peak(),
-        _rawdata,
+    var _rawdata,
         _datatree,
         _tree;
 
@@ -49,7 +48,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavSer
         } else {
             targettree.splice(datatree, node.id);
         }
-       updateCost(targettree.root);
+        updateCost(targettree.root);
     }
 
     var treeify = function(root, data, i) {
@@ -110,18 +109,17 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavSer
     /**
      * add button handler
      */
-    $scope.add = function() {
-        console.log(); 
+    $scope.add = function() { 
+        ListerDataService.add(ListerNavService.getCurrentUri(), _tree);
+        
 //        ListerDataService._tree.addChild(_node._rawdata.parent, _node);
 //        var parent = ListerDataService._tree.search(_node._rawdata.parent)
 //        parent._rawdata.total = JSON.parse(parent._rawdata.total) + JSON.parse(_node.cost);
-//        ListerDataService.popToLast('create');
 //        window.location.href = "#/list";
     }
     /**
      * cancel button handler
      */
-    $scope.cancel = function() {
-        
+    $scope.cancel = function() { 
     }
 }
