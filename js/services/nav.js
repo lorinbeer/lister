@@ -17,39 +17,52 @@
  */
 
 Lister.factory('ListerNavService', function ($http, ListerDataService) {
-    function navSelect() {};
-    function navCreate() {};
+    var _defaultIndexStr_ = '/index';
+
+    function navSelect() {}
+    function navCreate() {}
     function navListView(){}
+
+    function loadData(entry, data) {
+        var controller = 'menu',
+            uri;
+            
+            if (entry.action == 'create') {
+                // create mode
+                ListerDataService.create();
+            }
+              
+            if (data.options) {
+                controller = 'selection';
+            }
+
+           // format uri to angular friendly (no routing wild cards, ffffffuuuuuuuuuuuuu)
+           uri = entry.uri.split('/');
+           uri = uri.join('.');
+           // update state
+           history.push(uri);
+           currentdata = data;
+           window.location.href = '#/' + controller  +'/' + uri;
+    }
+
     var history = [];
     var currentdata = null;
     var navServiceObject = {
         'nav' : function (entry) {
-            $http.get('data/' + entry.uri + '.json').success(function(data) {
-                var controller = 'menu',
-                    uri;
-
-                // determine controller
-                if (entry.action == 'create') {
-                    // create mode
-                    ListerDataService.create();
+            $http.get('data/' + entry.uri + '.json')
+                .success(function(data) {
+                    loadData(entry, data); 
+            })
+            .error(function(data, status, headers, config) {
+                // if the entry uri was not a data file, check if there is an index file
+                if (entry.uri.search('/index') != -1) {
+                    console.log(entry.uri.search(_defaultIndexStr_), (entry.uri.length) - 6);
+                    navServiceObject.nav(entry);
                 }
-                
-                if (data.options) {
-                    controller = 'selection';
+                else {
+                    entry.uri = entry.uri + _defaultIndexStr_;
+                    navServiceObject.nav(entry);
                 }
-
-                // format uri to angular friendly (no routing wild cards, ffffffuuuuuuuuuuuuu)
-                uri = entry.uri.split('/');
-                uri = uri.join('.');
-                // update state
-                history.push(uri);
-                currentdata = data;
-                window.location.href = '#/' + controller  +'/' + uri;
-            }).
-            error(function(data, status, headers, config) {
-                entry.uri = entry.uri + '.index';
-                navServiceObject.nav(entry);
-                console.log(data, status, headers, config);
             });
 
         },
