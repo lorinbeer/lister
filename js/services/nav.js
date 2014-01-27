@@ -71,9 +71,15 @@ Lister.factory('ListerNavService', function ($http, ListerDataService) {
             console.log(navServiceObject.getCurrentUri());
             var addr = navServiceObject.getCurrentUri();
             addr = addr.split('.');
-            if (addr[0] == '' ) { addr.shift() };
-            addr.pop();
-            console.log(addr);
+            // shift off any whitespace at the beginning of address    
+            while (addr[0] == '' ) { addr.shift() };
+            // if the page is an index page, pop to the index of the last dir
+            if (addr[addr.length-1] == 'index') {
+                addr.pop(); addr.pop();
+                addr.push('index');
+            } else { 
+                addr.pop() 
+            }
             navServiceObject.nav({'uri' : addr.join('/')});
         },
 
