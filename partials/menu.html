@@ -18,8 +18,31 @@
 
 <div class="topcoat-list">
     <ul class="topcoat-list__container">
-        <li class="topcoat-list__item" ng-repeat="entry in MenuEntries" ng-click="nav(entry)">
-            {{entry.name}}
+        <li class="topcoat-list__item" ng-repeat="child in MenuEntries" ng-click="nav(child)">
+            {{child.name}}
+            <div class="list_item">
+              <div class="list_widget" 
+                   ls-toggle-widget 
+                   node="child" 
+                   on="icons/svg/arrow_up.svg" 
+                   off="icons/svg/arrow_down.svg">
+              </div>
+            </div>
+
+            <div ng-switch="child.expand">
+                <div class="topcoat-list" ng-switch-when="true">
+                    <ul class="topcoat-list__container">
+                        <li class="topcoat-list__item" id="{{child.id+'_sublist'}}" ng-repeat="subchild in sublist.children">
+                            <div>{{subchild.children[0].data.name}}</div>
+                            <div>Cost: {{subchild.children[0].cost}}</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </li>
     </ul>
+
+<div class="topcoat-button--large--cta twobar" ng-click="back()">Back</div>
+
 </div>

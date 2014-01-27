@@ -20,6 +20,7 @@
  *
  */
 function MenuCtrl($scope, $http, ListerNavService, ListerDataService) {
+    
     if (!ListerNavService.current()) {
         ListerNavService.nav({'uri':'index'});
     }
@@ -32,44 +33,38 @@ function MenuCtrl($scope, $http, ListerNavService, ListerDataService) {
     } else {
 
     }
-    /*
-    else {
-        $http.get('data/index.json').
-            success(function(data) {
-                $scope.MenuEntries = data;
-            }).
-            error(function(data, status, headers, config) {
-                console.log(data, status, headers, config);
-            });
-    }*/
 
-    /**
-     * on nav event
-     */
-    $scope.nav = function(entry) {
-        ListerNavService.nav(entry);
+//    console.log(ListerDataService._currentlist);
+
+    var address = ListerNavService.getCurrentUri(),
+        selectTree = ListerDataService._currentlist,
+        currentpage = '';
+
+
+    if (address == 'index') {
         
-/*
-        $http.get('data/'+entry.uri+'.json').success(function(data) {
-            if (data.type=="nav" || !data.type) {
-                data["ret"] = { "name" : "Back" };
-                ListerDataService.push(entry);
-                $scope.MenuEntries = data;
-            } else if (data.type=="select") {
-                ListerDataService.push(entry);
-                window.location.href = "#/selection/";
-            }
-        });
+    } else {
 
-        if (entry.action=="nav" || !entry.action) {
-            console.log("shoeaush");
-            $http.get('data/'+entry.uri+'.json').success(function(data) {
-                $scope.MenuEntries = data;
-            });
-        } else if (entry.action=="select") {
-            ListerDataService.push(entry);
-            window.location.href = "#/selection/";
+        address = address.split('.');
+        currentpage = address.pop();
+
+        if ( selectTree != null ) {
+            // if
+            address.join('.');
+            var str = 'root.' + address.join('.');
+            if ( selectTree.checkaddress( str )) {
+                $scope.sublist = selectTree.lookup(str);
+                console.log(selectTree.lookup(str));
+            }
         }
-*/
+    }
+
+    $scope.back = function(entry) {
+        console.log('backy back');
+        ListerNavService.up(); 
+    }    
+
+    $scope.nav = function(entry) {
+        ListerNavService.nav(entry); 
     }
 }

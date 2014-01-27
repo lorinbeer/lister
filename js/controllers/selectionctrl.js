@@ -59,6 +59,8 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavSer
         }
     }
 
+        
+
 /*    $http.get('data/'+entry.uri+'.json').success(function(data) {
     
     var data = ListerNavService.current();
@@ -69,8 +71,13 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavSer
             name = name + Math.floor((Math.random()*1000)+1);
             }
 */
+        console.log();
+        console.log(ListerNavService.getCurrentUri());
+
         var data = ListerNavService.current();
         var name = data.name;
+
+           
 
         console.log(data);
 
@@ -111,7 +118,7 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavSer
      */
     $scope.add = function() { 
         ListerDataService.add(ListerNavService.getCurrentUri(), _tree);
-        
+        ListerNavService.up(); 
 //        ListerDataService._tree.addChild(_node._rawdata.parent, _node);
 //        var parent = ListerDataService._tree.search(_node._rawdata.parent)
 //        parent._rawdata.total = JSON.parse(parent._rawdata.total) + JSON.parse(_node.cost);

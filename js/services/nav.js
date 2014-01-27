@@ -47,9 +47,21 @@ Lister.factory('ListerNavService', function ($http, ListerDataService) {
                 window.location.href = '#/' + controller  +'/' + uri;
             }).
             error(function(data, status, headers, config) {
+                entry.uri = entry.uri + '.index';
+                navServiceObject.nav(entry);
                 console.log(data, status, headers, config);
             });
 
+        },
+
+        'up' : function () {
+            console.log(navServiceObject.getCurrentUri());
+            var addr = navServiceObject.getCurrentUri();
+            addr = addr.split('.');
+            if (addr[0] == '' ) { addr.shift() };
+            addr.pop();
+            console.log(addr);
+            navServiceObject.nav({'uri' : addr.join('/')});
         },
 
         'current' : function () {
