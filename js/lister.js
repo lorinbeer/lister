@@ -81,10 +81,24 @@ Lister.factory('ListerDataService', function ($http) {
 
         //
         genID : function(str) {
-            function miracle() {
+            var miracle = function () {
                 return Math.floor((Math.random()+1) * 100000);
             }
-            return miracle() + miracle() + miracle();
+            
+            return miracle() + miracle() + miracle() + dataServiceObj.hash(str);
+        },
+
+        //
+        hash : function(str) {
+            var hash = 0;
+            if (!str) return hash;
+            if (str.length == 0) return hash;
+            for (i = 0; i < str.length; i++) {
+                char = str.charCodeAt(i);
+                hash = ((hash<<5)-hash)+char;
+                hash = hash & hash;
+            }
+            return hash;
         },
 
         // add the selection tree at the given address
