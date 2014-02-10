@@ -79,12 +79,18 @@ Lister.factory('ListerDataService', function ($http) {
             }
         },
 
+        //
+        genID : function(str) {
+            function miracle() {
+                return Math.floor((Math.random()+1) * 100000);
+            }
+            return miracle() + miracle() + miracle();
+        },
+
         // add the selection tree at the given address
         add : function(address, tree) {
             
             dataServiceObj._currentlist.add(address, tree.root);
-
-            console.log(dataServiceObj._currentlist);
 
             // find the selection id in the source tree, and its address
             // follow the address down in the selection tree, creating when necessary
