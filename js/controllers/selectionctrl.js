@@ -59,33 +59,15 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavSer
         }
     }
 
-        
+    var data = ListerNavService.current(),
+        listid = data.name + "-" + ListerDataService.genID();
 
-/*    $http.get('data/'+entry.uri+'.json').success(function(data) {
-    
-    var data = ListerNavService.current();
-    console.log("selection:", data); 
-            var name = data.name;
+   
 
-/*        if (!data.unique) {
-            name = name + Math.floor((Math.random()*1000)+1);
-            }
-*/
-        console.log();
-        console.log(ListerNavService.getCurrentUri());
-
-        var data = ListerNavService.current();
-        var name = data.name;
-
-           
-
-        console.log(data);
-
-        _tree = new Tree(new Node(name,data));
-        _rawdata = data;
- 
-        _datatree = new Tree(new Node(data.name,data));
-        treeify(_datatree.root, data); 
+     _tree = new Tree(new Node(listid,data));
+     _rawdata = data; 
+     _datatree = new Tree(new Node(data.id, data));
+     treeify(_datatree.root, data); 
         $scope.datatree = _datatree; 
         $scope.node = _datatree.root;
         $scope.spec = data;
@@ -96,6 +78,9 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavSer
         // bind the node cost to the scope, node cost in our running total, data cost is the baseline
         $scope.cost = cost;
 
+    /*
+     *
+     */
     $scope.select = function(node) {
         if (!node.cost) node.cost = node.data.cost ? node.data.cost : 0;
 
@@ -116,9 +101,10 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavSer
     /**
      * add button handler
      */
-    $scope.add = function() { 
+    $scope.add = function() {
         ListerDataService.add(ListerNavService.getCurrentUri(), _tree);
         ListerNavService.up(); 
+                
 //        ListerDataService._tree.addChild(_node._rawdata.parent, _node);
 //        var parent = ListerDataService._tree.search(_node._rawdata.parent)
 //        parent._rawdata.total = JSON.parse(parent._rawdata.total) + JSON.parse(_node.cost);
