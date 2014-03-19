@@ -16,7 +16,8 @@
             <div ng-switch="child.expand">
                 <div class="topcoat-list" ng-switch-when="true">
                     <ul class="topcoat-list__container">
-                        <li class="topcoat-list__item" id="{{child.id+'_sublist'}}" ng-repeat="subchild in child.children">
+                        <li class="topcoat-list__item" id="{{child.id+'_sublist'}}" ng-repeat="subchild in child.children[0].children">
+                            <div>asenuhasoehu</div>
                             <div>{{subchild.data.name}}</div>
                             <div>Cost: {{subchild.cost}}</div>
                         </li>

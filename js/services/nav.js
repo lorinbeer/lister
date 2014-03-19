@@ -45,15 +45,17 @@ Lister.factory('ListerNavService', function ($http, ListerDataService) {
            window.location.href = '#/' + controller  +'/' + uri;
     }
 
-    var history = [];
-    var currentdata = null;
-    var navServiceObject = {
+    var history = [],
+       currentdata = null,
+        navServiceObject = {
+          
         'nav' : function (entry) {
             $http.get('data/' + entry.uri + '.json')
                 .success(function(data) {
                     loadData(entry, data); 
             })
             .error(function(data, status, headers, config) {
+                console.log("GET ERROR: caught and handled");
                 // if the entry uri was not a data file, check if there is an index file
                 if (entry.uri.search('/index') != -1) {
                     console.log(entry.uri.search(_defaultIndexStr_), (entry.uri.length) - 6);

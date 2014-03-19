@@ -34,8 +34,6 @@ function MenuCtrl($scope, $http, ListerNavService, ListerDataService) {
 
     }
 
-//    console.log(ListerDataService._currentlist);
-
     var address = ListerNavService.getCurrentUri(),
         selectTree = ListerDataService._currentlist,
         currentpage = '';
