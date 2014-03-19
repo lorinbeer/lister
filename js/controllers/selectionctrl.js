@@ -102,7 +102,11 @@ function SelectionCtrl($scope, $http, $location, ListerDataService, ListerNavSer
      * add button handler
      */
     $scope.add = function() {
-        ListerDataService.add(ListerNavService.getCurrentUri(), _tree);
+
+        console.log(ListerNavService.getCurrentUri())
+        console.log(_tree);
+
+        ListerDataService.add(ListerNavService.getCurrentUri()+'.'+_tree.id, _tree);
         ListerNavService.up(); 
                 
 //        ListerDataService._tree.addChild(_node._rawdata.parent, _node);

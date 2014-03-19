@@ -103,7 +103,6 @@ Lister.factory('ListerDataService', function ($http) {
 
         // add the selection tree at the given address
         add : function(address, tree) {
-            
             dataServiceObj._currentlist.add(address, tree.root);
 
             // find the selection id in the source tree, and its address
